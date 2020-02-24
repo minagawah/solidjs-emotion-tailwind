@@ -1,0 +1,15 @@
+body {
+    font-family: -apple-system, Helvetica, "Segoe UI", "YuGothic", "Yu Gothic Medium", Meiryo, "MS PGothic", sans-serif;
+    line-height: 1.46;
+    color: #292929;
+}
+
+a, a:link, a:visited {
+    color: #0030ff;
+    text-decoration: none;
+}
+
+a:hover, a:active {
+    color: #ffca00;
+    text-decoration: underline;
+}
