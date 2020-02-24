@@ -22,13 +22,13 @@ A simple webpack project to demonstrate the use of Solid.js + Emotion + Tailwind
 Starting `webpack-dev-server`:
 
 ```bash
-yarn start
+yarn run start
 ```
 
 ESLint:
 
 ```bash
-yarn lint
+yarn run lint
 ```
 
 ### Build
@@ -36,7 +36,7 @@ yarn lint
 Build bundles under `build/`:
 
 ```bash
-yarn build
+yarn run build
 ```
 
 
