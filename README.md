@@ -43,6 +43,17 @@ yarn run build
 <a id="installed-npm-packages"></a>
 ## 3. Installed NPM Packages
 
+
+### prod
+
+- solid-js
+- ramda
+
+```bash
+yarn add solid-js ramda
+```
+
+
 ### dev
 
 For Babel:
@@ -94,14 +105,6 @@ For CSS (emotion + tailwindcss):
 yarn add --dev @babel/core @babel/preset-env @babel/plugin-syntax-dynamic-import @babel/plugin-transform-runtime babel-preset-solid babel-eslint eslint eslint-loader webpack webpack-cli webpack-dev-server webpack-merge html-webpack-plugin clean-webpack-plugin babel-loader file-loader license-webpack-plugin css-loader style-loader postcss-loader autoprefixer mini-css-extract-plugin emotion babel-plugin-macros tailwind.macro@next
 ```
 
-### prod
-
-- solid-js
-- ramda
-
-```bash
-yarn add solid-js ramda
-```
 
 
 <a id="license"></a>
