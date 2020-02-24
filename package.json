@@ -1,6 +1,6 @@
 {
   "name": "solidjs-emotion-tailwind",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple webpack project to demonstrate the use of Solid.js + Emotion + Tailwind.",
   "main": "index.js",
   "scripts": {

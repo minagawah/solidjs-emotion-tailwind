@@ -1,4 +1,4 @@
-import { createSignal, onCleanup } from 'solid-js';
+import { createSignal, onCleanup, lazy, Suspence } from 'solid-js';
 import { render } from "solid-js/dom";
 
 import { boo } from '@/lib/utils';
@@ -6,7 +6,9 @@ import { boo } from '@/lib/utils';
 import { Header } from '@/components/header';
 import { Home } from '@/components/home';
 import { Profile } from '@/components/profile';
-import { Settings } from '@/components/settings';
+
+// Unlike other components, 'Settings' is lazy loaded.
+const Settings = lazy(() => import('@/components/settings'));
 
 import './style.css';
 
@@ -22,8 +24,11 @@ const App = () => {
         <Match when={matches('profile')}>
           <Profile />
         </Match>
+        {/* 'Settings' is lazy loaded */}
         <Match when={matches('settings')}>
-          <Settings />
+          <Suspense fallback={<div>Loading...</div>}>
+            <Settings />
+          </Suspense>
         </Match>
       </Switch>
     </>

@@ -26,17 +26,17 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        enforce: 'pre',
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loader: 'eslint-loader',
-        options: {
-          emitWarning: true,
-          failOnError: false,
-          failOnWarning: false
-        }
-      },
+      // {
+      //   enforce: 'pre',
+      //   test: /\.jsx?$/,
+      //   exclude: /node_modules/,
+      //   loader: 'eslint-loader',
+      //   options: {
+      //     emitWarning: true,
+      //     failOnError: false,
+      //     failOnWarning: false
+      //   }
+      // },
       {
         test: /\.m?jsx?$/,
         exclude: /node_modules/,

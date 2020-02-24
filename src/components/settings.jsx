@@ -1,8 +1,10 @@
-export const Settings = () => {
+const Settings = () => {
   return (
     <>
       <h1>Settings</h1>
-      <p>Configure the app.</p>
+      <p>This component is lazy loaded.</p>
     </>
   );
 }
+
+export default Settings;
