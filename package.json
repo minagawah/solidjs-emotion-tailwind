@@ -1,7 +1,7 @@
 {
   "name": "solidjs-emotion-tailwind",
   "version": "1.0.1",
-  "description": "Example project for Solid.js with Emotion + Tailwind.",
+  "description": "Example project using Solid.js with Emotion + Tailwind.",
   "main": "index.js",
   "scripts": {
     "lint": "$npm_execpath eslint src/**/*.js",

@@ -1,6 +1,6 @@
 # solidjs-emotion-tailwind
 
-Example project for Solid.js with Emotion + Tailwind.
+Example project using Solid.js with Emotion + Tailwind.
 
 [1. About](#about)  
 [2. Dev/Build](#dev-build)  
