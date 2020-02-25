@@ -1,6 +1,6 @@
 # solidjs-emotion-tailwind
 
-A simple webpack project to demonstrate the use of Solid.js + Emotion + Tailwind.
+Example project for Solid.js with Emotion + Tailwind.
 
 [1. About](#about)  
 [2. Dev/Build](#dev-build)  
