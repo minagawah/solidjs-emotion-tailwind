@@ -1,7 +1,5 @@
 import { createSignal, onCleanup, lazy, Suspence } from 'solid-js';
-import { render } from "solid-js/dom";
-
-import { boo } from '@/lib/utils';
+import { render } from 'solid-js/dom';
 
 import { Header } from '@/components/header';
 import { Home } from '@/components/home';
@@ -40,14 +38,14 @@ render(App, document.getElementById('app'));
 /**
  * @returns {boolean}
  */
-function createRouteHandler () {
+function createRouteHandler() {
   const [location, setLocation] = createSignal('home');
 
   /**
    * @param {HashChangeEvent}
    */
   const locationHandler = () => {
-    boo(`[app] window.location.hash: ${window.location.hash}`);
+    console.log(`[app] window.location.hash: ${window.location.hash}`);
     setLocation(window.location.hash.slice(1));
   };
 

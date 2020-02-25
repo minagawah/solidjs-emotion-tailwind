@@ -5,6 +5,6 @@ const Settings = () => {
       <p>This component is lazy loaded.</p>
     </>
   );
-}
+};
 
 export default Settings;

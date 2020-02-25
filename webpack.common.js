@@ -9,11 +9,11 @@ const isProd = process.env.NODE_ENV === 'production';
 module.exports = {
   target: 'web',
   entry: {
-    app: './src/app.jsx',
+    app: './src/app.jsx'
   },
   output: {
     filename: '[name].[hash].js',
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, 'build')
   },
   stats: {
     colors: true
@@ -21,8 +21,8 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
-      '@': path.join(__dirname, 'src/'), // So that makes our lives easier.
-    },
+      '@': path.join(__dirname, 'src/') // So that makes our lives easier.
+    }
   },
   module: {
     rules: [
@@ -42,22 +42,18 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel-loader',
         options: {
-          rootMode: 'upward', // Babel looks up 'babel.config.js'.
-        },
+          rootMode: 'upward' // Babel looks up 'babel.config.js'.
+        }
       },
       {
         test: /\.(png|svg|jpg|gif|ico)$/,
-        use: [
-          'file-loader'
-        ]
+        use: ['file-loader']
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
-        use: [
-          'file-loader'
-        ]
-      },
-    ],
+        use: ['file-loader']
+      }
+    ]
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -65,9 +61,9 @@ module.exports = {
       chunks: ['solid', 'ramda', 'vendor', 'app'],
       filename: 'index.html',
       template: './src/index.html'
-    }),
+    })
     // new CopyWebpackPlugin([
     //   { from: 'src/assets', to: 'assets' }
     // ]),
-  ],
+  ]
 };

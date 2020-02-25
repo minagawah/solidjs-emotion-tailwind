@@ -1,10 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');
 const tailwindcss = require('tailwindcss');
-const LicenseWebpackPlugin = require('license-webpack-plugin').LicenseWebpackPlugin;
+const LicenseWebpackPlugin = require('license-webpack-plugin')
+  .LicenseWebpackPlugin;
 
 const common = require('./webpack.common.js');
 
@@ -14,7 +15,7 @@ module.exports = merge(common, {
   devtool: 'cheap-module-source-map',
   optimization: {
     runtimeChunk: {
-      name: 'runtime', // All share the same `runtime.js`.
+      name: 'runtime' // All share the same `runtime.js`.
     },
     minimize: true,
     splitChunks: {
@@ -25,18 +26,18 @@ module.exports = merge(common, {
         vendors: false, // Disable the default.
         solid: {
           name: 'solid',
-          test: new RegExp('[\\/]node_modules[\\/](solid-js)[\\/]'),
+          test: new RegExp('[\\/]node_modules[\\/](solid-js)[\\/]')
         },
         ramda: {
           name: 'ramda',
-          test: new RegExp('[\\/]node_modules[\\/](ramda)[\\/]'),
+          test: new RegExp('[\\/]node_modules[\\/](ramda)[\\/]')
         },
         vendor: {
           name: 'vendor',
-          test: new RegExp('[\\/]node_modules[\\/](!solid-js)(!ramda)[\\/]'),
-        },
-      },
-    },
+          test: new RegExp('[\\/]node_modules[\\/](!solid-js)(!ramda)[\\/]')
+        }
+      }
+    }
   },
   module: {
     rules: [
@@ -48,24 +49,21 @@ module.exports = merge(common, {
           },
           'css-loader',
           {
-            loader: "postcss-loader",
+            loader: 'postcss-loader',
             options: {
               ident: 'postcss',
-              plugins: [
-                tailwindcss(),
-                autoprefixer()
-              ]
+              plugins: [tailwindcss(), autoprefixer()]
             }
           }
         ]
-      },
-    ],
+      }
+    ]
   },
   plugins: [
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
       chunkFilename: '[id].[hash].css'
     }),
-    new LicenseWebpackPlugin(),
-  ],
+    new LicenseWebpackPlugin()
+  ]
 });
