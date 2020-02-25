@@ -20,7 +20,7 @@ module.exports = {
       "files": ["**/*.js", "**/*.jsx"],
       "rules": {
         "indent": ["error", 2],
-        "no-unused-vars": 1,
+        "no-unused-vars": 1, // TODO: ESLint doesn't understand Solid.js
       },
     }
   ],

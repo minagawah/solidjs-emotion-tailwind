@@ -15,6 +15,6 @@ module.exports = {
     "solid",
   ],
   "plugins": [
-    "macros"
+    "macros" // Using 'babel-plugin-macros' for Emotion + Tailwind.
   ],
 }

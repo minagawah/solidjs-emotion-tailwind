@@ -42,7 +42,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel-loader',
         options: {
-          rootMode: 'upward', // Babel looks up "babel.config.js"
+          rootMode: 'upward', // Babel looks up 'babel.config.js'.
         },
       },
       {
