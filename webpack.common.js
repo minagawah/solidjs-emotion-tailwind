@@ -21,22 +21,22 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
-      '@': path.join(__dirname, 'src/'),
+      '@': path.join(__dirname, 'src/'), // So that makes our lives easier.
     },
   },
   module: {
     rules: [
-      // {
-      //   enforce: 'pre',
-      //   test: /\.jsx?$/,
-      //   exclude: /node_modules/,
-      //   loader: 'eslint-loader',
-      //   options: {
-      //     emitWarning: true,
-      //     failOnError: false,
-      //     failOnWarning: false
-      //   }
-      // },
+      {
+        enforce: 'pre',
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: 'eslint-loader',
+        options: {
+          emitWarning: true,
+          failOnError: false,
+          failOnWarning: false
+        }
+      },
       {
         test: /\.m?jsx?$/,
         exclude: /node_modules/,
