@@ -1,5 +1,5 @@
-const path = require('path');
-const webpack = require('webpack');
+/** @prettier */
+
 const merge = require('webpack-merge');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');

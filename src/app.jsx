@@ -1,4 +1,6 @@
-import { createSignal, onCleanup, lazy, Suspence } from 'solid-js';
+/** @prettier */
+
+import { createSignal, onCleanup, lazy } from 'solid-js';
 import { render } from 'solid-js/dom';
 
 import { Header } from '@/components/header';

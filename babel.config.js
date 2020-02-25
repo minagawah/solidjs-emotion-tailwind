@@ -1,3 +1,5 @@
+/** @prettier */
+
 module.exports = {
   presets: [
     [

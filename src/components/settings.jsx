@@ -1,3 +1,5 @@
+/** @prettier */
+
 const Settings = () => {
   return (
     <>

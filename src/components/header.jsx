@@ -1,3 +1,5 @@
+/** @prettier */
+
 import { css } from 'emotion';
 import tw from 'tailwind.macro';
 

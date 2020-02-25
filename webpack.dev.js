@@ -1,7 +1,7 @@
-const path = require('path');
+/** @prettier */
+
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');
 const tailwindcss = require('tailwindcss');

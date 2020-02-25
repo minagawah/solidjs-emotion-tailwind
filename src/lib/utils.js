@@ -1,3 +1,5 @@
+/** @prettier */
+
 import { compose, identity, tap } from 'ramda';
 
 export const int = Math.trunc;
