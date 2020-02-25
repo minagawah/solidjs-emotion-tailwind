@@ -59,10 +59,7 @@ yarn add solid-js ramda
 For Babel:
 - @babel/core
 - @babel/preset-env
-- @babel/plugin-transform-runtime  
-&nbsp; For the runtime Webpack builds (you may use `babel-polyfill` alternatively).  
-- babel-preset-solid  
-&nbsp; For Solid JS.
+- babel-preset-solid
 
 For ESLint:
 - babel-eslint
