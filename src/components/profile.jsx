@@ -1,7 +1,9 @@
-import { createResourceState, createEffect } from 'solid-js';
+/** @prettier */
+
+import { createResourceState } from 'solid-js';
 import { css } from 'emotion';
 
-import { int, rand, randInt } from '@/lib/utils';
+import { randInt } from '@/lib/utils';
 
 const divinations = [
   'You will have a wonderful day',
@@ -47,14 +49,12 @@ export const Profile = () => {
       <h1>Profile</h1>
       <div>
         <span className={labelStyle}>message</span>
-        <Switch>
-          <Match when={!state.message}>
-            <span className={messageWaitStyle}>Please wait...</span>
-          </Match>
-          <Match when={state.message}>
-            <span className={messageStyle}>{state.message}</span>
-          </Match>
-        </Switch>
+        <Show
+          when={state.message}
+          fallback={<span className={messageWaitStyle}>Please wait...</span>}
+        >
+          <span className={messageStyle}>{state.message}</span>
+        </Show>
       </div>
     </>
   );
