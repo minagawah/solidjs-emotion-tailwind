@@ -59,8 +59,6 @@ yarn add solid-js ramda
 For Babel:
 - @babel/core
 - @babel/preset-env
-- @babel/plugin-syntax-dynamic-import  
-&nbsp; For asynchronous module import.  
 - @babel/plugin-transform-runtime  
 &nbsp; For the runtime Webpack builds (you may use `babel-polyfill` alternatively).  
 - babel-preset-solid  
@@ -102,7 +100,7 @@ For CSS (emotion + tailwindcss):
 - tailwind.macro@next
 
 ```bash
-yarn add --dev @babel/core @babel/preset-env @babel/plugin-syntax-dynamic-import @babel/plugin-transform-runtime babel-preset-solid babel-eslint eslint eslint-loader webpack webpack-cli webpack-dev-server webpack-merge html-webpack-plugin clean-webpack-plugin babel-loader file-loader license-webpack-plugin css-loader style-loader postcss-loader autoprefixer mini-css-extract-plugin emotion babel-plugin-macros tailwind.macro@next
+yarn add --dev @babel/core @babel/preset-env @babel/plugin-transform-runtime babel-preset-solid babel-eslint eslint eslint-loader webpack webpack-cli webpack-dev-server webpack-merge html-webpack-plugin clean-webpack-plugin babel-loader file-loader license-webpack-plugin css-loader style-loader postcss-loader autoprefixer mini-css-extract-plugin emotion babel-plugin-macros tailwind.macro@next
 ```
 
 
