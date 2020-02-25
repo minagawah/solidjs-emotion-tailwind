@@ -96,8 +96,13 @@ For CSS (emotion + tailwindcss):
 - babel-plugin-macros
 - tailwind.macro@next
 
+For Jest:
+
+- jest
+- jest-emotion
+
 ```bash
-yarn add --dev @babel/core @babel/preset-env @babel/plugin-transform-runtime babel-preset-solid babel-eslint eslint eslint-loader webpack webpack-cli webpack-dev-server webpack-merge html-webpack-plugin clean-webpack-plugin babel-loader file-loader license-webpack-plugin css-loader style-loader postcss-loader autoprefixer mini-css-extract-plugin emotion babel-plugin-macros tailwind.macro@next
+yarn add --dev @babel/core @babel/preset-env @babel/plugin-transform-runtime babel-preset-solid babel-eslint eslint eslint-loader webpack webpack-cli webpack-dev-server webpack-merge html-webpack-plugin clean-webpack-plugin babel-loader file-loader license-webpack-plugin css-loader style-loader postcss-loader autoprefixer mini-css-extract-plugin emotion babel-plugin-macros tailwind.macro@next jest jest-emotion
 ```
 
 

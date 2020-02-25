@@ -1,10 +1,11 @@
 {
   "name": "solidjs-emotion-tailwind",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Example webpack project using Solid.js with Emotion + Tailwind.",
   "main": "index.js",
   "scripts": {
     "lint": "$npm_execpath eslint src/**/*.js",
+    "test": "$npm_execpath jest",
     "start": "$npm_execpath webpack-dev-server --config webpack.dev.js",
     "build": "$npm_execpath webpack --config webpack.prod.js"
   },
@@ -43,6 +44,8 @@
     "eslint-loader": "^3.0.3",
     "file-loader": "^5.1.0",
     "html-webpack-plugin": "^3.2.0",
+    "jest": "^25.1.0",
+    "jest-emotion": "^10.0.27",
     "license-webpack-plugin": "^2.1.3",
     "mini-css-extract-plugin": "^0.9.0",
     "postcss-loader": "^3.0.0",
