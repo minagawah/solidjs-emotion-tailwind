@@ -6,13 +6,19 @@ export const useDebounce = () => {
   let started = null;
   let elapsed = 0;
 
+  const reset = () => {
+    timerId = null;
+    started = null;
+    elapsed = 0;
+  };
+
   const cancel = () => {
+    // console.log(`[debounce] Cancel (for ${timerId})`);
     if (timerId) {
       elapsed = new Date() - started;
       // console.log(`[debounce] Canceled after ${elapsed}msec`);
       clearTimeout(timerId);
-      timerId = null;
-      elapsed = 0;
+      reset();
     }
   };
 
@@ -23,28 +29,21 @@ export const useDebounce = () => {
 
   const setDebounce = (f, wait = 0, ctx = null) => {
     const g = () => {
-      // console.log(`[debounce] Executed after ${elapsed} msec`);
-      timerId = null;
-      started = null;
-      elapsed = 0;
       if (typeof Reflect === 'object') {
         Reflect.apply(f, ctx, args);
       } else {
         Function.prototype.apply.call(f, ctx, args);
       }
+      reset();
     };
 
     return function() {
       ctx = ctx || this || {};
       args = arguments;
 
-      let now = new Date();
-      elapsed = now - started;
-      started = now;
+      if (timerId) cancel();
 
-      if (timerId) {
-        cancel();
-      }
+      started = new Date();
       timerId = setTimeout(g, wait);
     };
   };

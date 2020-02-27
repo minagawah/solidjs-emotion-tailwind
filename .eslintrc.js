@@ -20,7 +20,10 @@ module.exports = {
       files: ['**/*.js'],
       rules: {
         indent: ['error', 2],
+        // Ugly, but suppressing it since ESLint
+        // does not understand Solid.js in JSX.
         'no-unused-vars': 0,
+        // To match with prettier's 'es5' (of 'trailingComma').
         'comma-dangle': [
           2,
           {

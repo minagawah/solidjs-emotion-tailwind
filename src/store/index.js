@@ -7,6 +7,11 @@ import { createCommon } from './createCommon';
 
 const StoreContext = createContext();
 
+/*
+ * For more state management examples, look at the ones provided by Solid.js:
+ * Real World Demo (store management)
+ * https://github.com/ryansolid/solid-realworld/tree/master/src/store
+ */
 export const StoreProvider = props => {
   const [state, loadState, setState] = createResourceState({});
   const store = [state, {}];

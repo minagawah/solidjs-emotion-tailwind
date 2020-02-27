@@ -4,14 +4,13 @@ import { lazy, createEffect } from 'solid-js';
 import { css } from 'emotion';
 
 import { useStore, useScreenSize } from './store';
-import { RouteProvider, createRouteHandler } from '@/router';
+import { RouteProvider, createRouteHandler } from './router';
 
 import { Loading } from '@/components/Loading';
 import { Header } from '@/components/Header';
 import { Home } from '@/components/Home';
 import { Profile } from '@/components/Profile';
 
-// Unlike other components, 'Settings' is lazy loaded.
 const Settings = lazy(() => import('@/components/Settings'));
 
 import './style.css';
@@ -47,6 +46,11 @@ export const App = () => {
       <Header />
       <Suspense fallback={<Loading styles={loadingStyle} />}>
         <Switch fallback={<Home />}>
+          {/*
+           * For query param handling, look at the example provided by Solid.js:
+           * Real World Demo (routing)
+           * https://github.com/ryansolid/solid-realworld/blob/master/src/App.js
+           */}
           <Match when={match('home', /^home/)}>
             <Home />
           </Match>
@@ -54,7 +58,6 @@ export const App = () => {
             <Profile />
           </Match>
           <Match when={match('settings', /^settings/)}>
-            {/* 'Settings' is lazy loaded */}
             <Settings />
           </Match>
         </Switch>

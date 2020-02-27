@@ -5,9 +5,6 @@ import tw from 'tailwind.macro';
 
 import { useStore } from '@/store';
 
-const mt2 = tw`mt-2`;
-const flexRow = tw`flex flex-row flex-no-wrap justify-start content-center items-center`;
-
 const secretStyle = css`
   ${tw`p-1 pl-4 pr-4 text-gray-200 bg-black`}
 `;
@@ -22,8 +19,7 @@ const secretButtonStyle = css`
 `;
 
 const secretWrapperStyle = css`
-  ${mt2}
-  ${flexRow}
+  ${tw`mt-2 flex flex-row flex-no-wrap justify-start content-center items-center`}
 `;
 
 const Settings = () => {
@@ -33,7 +29,6 @@ const Settings = () => {
 
   const setSecret = () => {
     const { value: secret } = document.querySelector('#secret');
-    console.log(`[Settings] secret: ${secret}`);
     if (secret) {
       actions.setSecret(secret);
     }
@@ -42,7 +37,11 @@ const Settings = () => {
   return (
     <>
       <h1>Settings</h1>
+
       <p>This component is lazy loaded.</p>
+
+      <p>Setting/Removing secret codes to/from local storage.</p>
+
       <div className={secretWrapperStyle}>
         <div className={secretStyle}>
           <Show when={store.secret} fallback="(no secret)">

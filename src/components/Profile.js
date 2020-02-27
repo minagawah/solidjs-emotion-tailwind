@@ -38,6 +38,10 @@ const getDivination = async () =>
     }, 650);
   });
 
+const PleaseWait = () => (
+  <span className={messageWaitStyle}>Please wait...</span>
+);
+
 export const Profile = () => {
   const [state, load] = createResourceState();
 
@@ -49,10 +53,7 @@ export const Profile = () => {
       <h1>Profile</h1>
       <div>
         <span className={labelStyle}>message</span>
-        <Show
-          when={state.message}
-          fallback={<span className={messageWaitStyle}>Please wait...</span>}
-        >
+        <Show when={state.message} fallback={PleaseWait}>
           <span className={messageStyle}>{state.message}</span>
         </Show>
       </div>
