@@ -14,13 +14,13 @@ Example webpack project using Solid.js with Emotion + Tailwind.
 A simple Solid.js project example.
 
 Features:
-- Webpack (Split Chunks, License Extraction, etc.)
+- Webpack (split chunks, license extraction, etc.)
 - Route provider
-- Store provider (Resize Event, Local Storage, etc.)
-- Async management (lazy load, Suspense, Show, etc.)
+- Store provider (resize event, Local Storage, etc.)
+- Async examples (lazy load, Suspense, Show, etc.)
 - Emotion + Tailwind
-- Jest
 - ESLint + Prettier
+- Jest
 
 
 <a id="dev-build"></a>
