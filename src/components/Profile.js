@@ -8,7 +8,7 @@ import { randInt } from '@/lib/utils';
 const divinations = [
   'You will have a wonderful day',
   'You are doomed',
-  'Depends on what you aim for'
+  'Depends on what you aim for',
 ];
 
 const padding = 'padding: 0.2em 0.6em;';

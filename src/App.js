@@ -1,18 +1,17 @@
 /** @prettier */
 
 import { createSignal, onCleanup, lazy } from 'solid-js';
-import { render } from 'solid-js/dom';
 
-import { Header } from '@/components/header';
-import { Home } from '@/components/home';
-import { Profile } from '@/components/profile';
+import { Header } from '@/components/Header';
+import { Home } from '@/components/Home';
+import { Profile } from '@/components/Profile';
 
 // Unlike other components, 'Settings' is lazy loaded.
-const Settings = lazy(() => import('@/components/settings'));
+const Settings = lazy(() => import('@/components/Settings'));
 
 import './style.css';
 
-const App = () => {
+export const App = () => {
   const matches = createRouteHandler();
   return (
     <>
@@ -34,8 +33,6 @@ const App = () => {
     </>
   );
 };
-
-render(App, document.getElementById('app'));
 
 /**
  * @returns {boolean}

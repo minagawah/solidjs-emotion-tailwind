@@ -8,7 +8,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
   target: 'web',
   entry: {
-    app: './src/app.jsx'
+    app: './src/index.js'
   },
   output: {
     filename: '[name].[hash].js',
@@ -18,7 +18,7 @@ module.exports = {
     colors: true
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js'],
     alias: {
       '@': path.join(__dirname, 'src/') // So that makes our lives easier.
     }
@@ -27,7 +27,7 @@ module.exports = {
     rules: [
       {
         enforce: 'pre',
-        test: /\.jsx?$/,
+        test: /\.js$/,
         exclude: /node_modules/,
         loader: 'eslint-loader',
         options: {
@@ -37,7 +37,7 @@ module.exports = {
         }
       },
       {
-        test: /\.m?jsx?$/,
+        test: /\.m?js$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
         options: {

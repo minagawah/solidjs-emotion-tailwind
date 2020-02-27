@@ -1,3 +1,5 @@
+/** @prettier */
+
 module.exports = {
   parser: 'babel-eslint',
   extends: ['eslint:recommended'],
@@ -6,20 +8,30 @@ module.exports = {
     es6: true,
     browser: true,
     node: true,
-    jest: true
+    jest: true,
   },
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
-    ecmaFeatures: { jsx: true }
+    ecmaFeatures: { jsx: true },
   },
   overrides: [
     {
-      files: ['**/*.js', '**/*.jsx'],
+      files: ['**/*.js'],
       rules: {
         indent: ['error', 2],
-        'no-unused-vars': 1 // TODO: ESLint doesn't understand Solid.js
-      }
-    }
-  ]
+        'no-unused-vars': 0,
+        'comma-dangle': [
+          2,
+          {
+            arrays: 'always-multiline',
+            objects: 'always-multiline',
+            imports: 'always-multiline',
+            exports: 'always-multiline',
+            functions: 'never',
+          },
+        ],
+      },
+    },
+  ],
 };
