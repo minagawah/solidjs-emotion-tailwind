@@ -11,7 +11,16 @@ Example webpack project using Solid.js with Emotion + Tailwind.
 <a id="about"></a>
 ## 1. About
 
-A simple webpack project to demonstrate the use of Solid.js + Emotion + Tailwind.
+A simple Solid.js project example.
+
+Features:
+- Webpack (split chunks, license extraction, etc.)
+- Route provider
+- Store provider (screen size, local storage, etc.)
+- Async examples (lazy load, Suspense, Show, etc.)
+- Emotion + Tailwind
+- Jest
+- ESLint + Prettier
 
 
 <a id="dev-build"></a>
@@ -33,7 +42,7 @@ yarn run lint
 
 ### Build
 
-Build bundles under `build/`:
+Build bundles to `build` directory:
 
 ```bash
 yarn run build
