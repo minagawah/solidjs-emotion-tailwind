@@ -22,7 +22,6 @@ Features:
 - ESLint + Prettier
 - Jest
 
-
 <a id="dev-build"></a>
 ## 2. Dev/Build
 

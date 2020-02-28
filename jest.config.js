@@ -2,7 +2,7 @@
 
 module.exports = {
   roots: ['<rootDir>/src'],
-  testMatch: ['**/__tests__/**/*.(js)', '**/?(*.)+(test|spec).(js)'],
+  testMatch: ['**/tests/**/*.(js)', '**/?(*.)+(spec).(js)'],
   testPathIgnorePatterns: ['/node_modules/', '<rootDir>/src/setupTests.js'],
   moduleFileExtensions: ['js', 'json', 'node'],
   moduleNameMapper: {
