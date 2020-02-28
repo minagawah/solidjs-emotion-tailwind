@@ -6,12 +6,12 @@ import { css } from 'emotion';
 import { useStore, useScreenSize } from './store';
 import { RouteProvider, createRouteHandler } from './router';
 
-import { Loading } from '@/components/Loading';
-import { Header } from '@/components/Header';
-import { Home } from '@/components/Home';
-import { Profile } from '@/components/Profile';
+import { Loading } from '@/components/loading';
+import { Header } from '@/components/header';
+import { Home } from '@/components/home';
+import { Profile } from '@/components/profile';
 
-const Settings = lazy(() => import('@/components/Settings'));
+const Settings = lazy(() => import('@/components/settings'));
 
 import './style.css';
 

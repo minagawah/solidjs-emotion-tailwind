@@ -2,7 +2,7 @@
 
 import { render } from 'solid-js/dom';
 import { StoreProvider } from './store';
-import { App } from './App';
+import { App } from './app';
 
 render(
   () => (

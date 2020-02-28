@@ -1,5 +1,6 @@
 /** @prettier */
 
+// import { afterEffects } from 'solid-js';
 import { css } from 'emotion';
 import tw from 'tailwind.macro';
 
@@ -25,14 +26,26 @@ const secretWrapperStyle = css`
 const Settings = () => {
   const [store, actions] = useStore();
 
+  let secretRef;
+
   const removeSecret = () => actions.removeSecret();
 
   const setSecret = () => {
-    const { value: secret } = document.querySelector('#secret');
+    const { value: secret } = secretRef || {};
     if (secret) {
       actions.setSecret(secret);
     }
   };
+
+  /*
+  afterEffects(() => {
+    console.log(secretRef);
+  });
+   */
+  // TODO: 'afterEffects' does not fire...
+  setTimeout(() => {
+    console.log(secretRef);
+  }, 400);
 
   return (
     <>
@@ -54,7 +67,7 @@ const Settings = () => {
       </div>
       <div className={secretWrapperStyle}>
         <input
-          id="secret"
+          ref={secretRef}
           type="text"
           value="1234"
           className={secretInputStyle}
