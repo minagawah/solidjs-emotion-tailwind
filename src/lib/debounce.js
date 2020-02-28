@@ -2,18 +2,18 @@
 
 export const useDebounce = () => {
   let timerId = null;
-  let args = null;
+  let args = void 0;
   let started = null;
   let elapsed = 0;
 
   const reset = () => {
     timerId = null;
+    args = void 0;
     started = null;
     elapsed = 0;
   };
 
   const cancel = () => {
-    // console.log(`[debounce] Cancel (for ${timerId})`);
     if (timerId) {
       elapsed = new Date() - started;
       // console.log(`[debounce] Canceled after ${elapsed}msec`);
@@ -22,27 +22,25 @@ export const useDebounce = () => {
     }
   };
 
+  // Runs only when explicitly called for cleanup.
   const cancelDebounce = () => {
-    console.log('[debounce] Explicitly canceled for cleanup.');
     cancel();
   };
 
   const setDebounce = (f, wait = 0, ctx = null) => {
     const g = () => {
-      if (typeof Reflect === 'object') {
-        Reflect.apply(f, ctx, args);
-      } else {
-        Function.prototype.apply.call(f, ctx, args);
-      }
+      // This polifills to: Function.prototype.apply.call(f, ctx, args);
+      Reflect.apply(f, ctx, args);
       reset();
     };
 
     return function() {
-      ctx = ctx || this || {};
-      args = arguments;
-
+      // When still running, cancel the previous (so that
+      // the previous won't run), and register a new timer.
       if (timerId) cancel();
 
+      ctx = ctx || this || {};
+      args = arguments;
       started = new Date();
       timerId = setTimeout(g, wait);
     };
