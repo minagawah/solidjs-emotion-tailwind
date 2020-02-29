@@ -39,7 +39,8 @@ export const App = () => {
   });
 
   actions.setScreenSize();
-  actions.setSecret('1234');
+
+  console.log(`[App] message: ${actions.getMessage()}`);
 
   return (
     <RouteProvider router={router}>

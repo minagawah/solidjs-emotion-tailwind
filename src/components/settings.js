@@ -26,25 +26,24 @@ const secretWrapperStyle = css`
 const Settings = () => {
   const [store, actions] = useStore();
 
-  let secretRef;
+  let inputRef;
 
   const removeSecret = () => actions.removeSecret();
 
   const setSecret = () => {
-    const { value: secret } = secretRef || {};
+    const { value: secret } = inputRef || {};
     if (secret) {
       actions.setSecret(secret);
     }
   };
 
-  /*
-  afterEffects(() => {
-    console.log(secretRef);
-  });
-   */
+  // afterEffects(() => {
+  //   console.log(inputRef);
+  // });
+  //
   // TODO: 'afterEffects' does not fire...
   setTimeout(() => {
-    console.log(secretRef);
+    console.log(`[Settings] inputRef: ${inputRef ? 'yes' : 'no'}`);
   }, 400);
 
   return (
@@ -67,9 +66,9 @@ const Settings = () => {
       </div>
       <div className={secretWrapperStyle}>
         <input
-          ref={secretRef}
+          ref={inputRef}
           type="text"
-          value="1234"
+          value={store.secret}
           className={secretInputStyle}
         />
         <button className={secretButtonStyle} onClick={setSecret}>

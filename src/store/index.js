@@ -2,10 +2,14 @@
 
 import { createResourceState, createContext, useContext } from 'solid-js';
 
-import { ScreenSizeContext, createScreenSize } from './createScreenSize';
 import { createCommon } from './createCommon';
+import { createSecret } from './createSecret';
+import { ScreenSizeContext, createScreenSize } from './createScreenSize';
 
 const StoreContext = createContext();
+
+const initialState = { secret: '1234' };
+const initialAction = {};
 
 /*
  * For more state management examples, look at the ones provided by Solid.js:
@@ -13,10 +17,11 @@ const StoreContext = createContext();
  * https://github.com/ryansolid/solid-realworld/tree/master/src/store
  */
 export const StoreProvider = props => {
-  const [state, loadState, setState] = createResourceState({});
-  const store = [state, {}];
+  const [state, loadState, setState] = createResourceState(initialState);
+  const store = [state, initialAction];
 
   createCommon({ store, loadState, setState });
+  createSecret({ store, loadState, setState });
   createScreenSize({ store, loadState, setState });
 
   return (

@@ -8,12 +8,10 @@ const DEBOUNCE_DURATION = 200;
 
 export const ScreenSizeContext = createContext([{ width: 0, height: 0 }, {}]);
 
-const screenSize = () => {
-  return {
-    width: window.innerWidth || 0,
-    height: window.innerHeight || 0,
-  };
-};
+const screenSize = () => ({
+  width: window.innerWidth || 0,
+  height: window.innerHeight || 0,
+});
 
 export const createScreenSize = ({ store, setState }) => {
   // "actions" contains previously defined actions.
