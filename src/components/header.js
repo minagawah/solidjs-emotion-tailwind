@@ -30,6 +30,9 @@ export const Header = () => {
       <a href="#profile" className={linkStyle}>
         Profile
       </a>
+      <a href="#canvas" className={linkStyle}>
+        Canvas
+      </a>
       <a href="#settings" className={linkStyle}>
         Settings
       </a>

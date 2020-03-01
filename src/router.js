@@ -26,7 +26,7 @@ export const createRouteHandler = initial => {
   const [read, triggerParams] = createSignal();
 
   const locationHandler = () => {
-    console.log(`[Route] location.hash: ${window.location.hash}`);
+    // console.log(`[Route] route: ${window.location.hash}`);
     setLocation(window.location.hash.slice(1));
   };
 
@@ -38,17 +38,18 @@ export const createRouteHandler = initial => {
     window.removeEventListener('hashchange', locationHandler);
   });
 
-  const match = (name, test) => {
+  const match = test => {
     const loc = location().split('?')[0];
     const match = test.exec(loc);
 
     if (match) {
-      params = { params: match.slice(1), routeName: name };
+      params = { params: match.slice(1) };
       triggerParams();
     }
     return !!match;
   };
 
+  // TODO: Consider revising the comma operator.
   const getParams = () => (read(), params);
 
   return {

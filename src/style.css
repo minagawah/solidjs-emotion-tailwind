@@ -4,6 +4,20 @@ body {
     color: #292929;
 }
 
+h1 {
+    font-size: 1.8em; /* Originally: 2em */
+    margin-block-start: 0.3em; /* Originally: 0.67em */
+    margin-block-end: 0.3em; /* Originally: 0.67em */
+}
+
+h2 {
+    font-size: 1.35em; /* Originally: 1.5em */
+    margin-block-start: 0.5em; /* Originally: 0.83em */
+    margin-block-end: 0.5em; /* Originally: 0.83em */
+    border-left: solid 0.5em #f1f1f1;
+    padding-left: 0.3em;
+}
+
 a, a:link, a:visited {
     color: #0030ff;
     text-decoration: none;

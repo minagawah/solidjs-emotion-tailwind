@@ -1,12 +1,10 @@
 /** @prettier */
 
-import { createContext, onCleanup } from 'solid-js';
+import { onCleanup } from 'solid-js';
 
 import { useDebounce } from '@/lib/debounce';
 
-const DEBOUNCE_DURATION = 200;
-
-export const ScreenSizeContext = createContext([{ width: 0, height: 0 }, {}]);
+const DEBOUCNE_MSEC = 200;
 
 const screenSize = () => ({
   width: window.innerWidth || 0,
@@ -22,10 +20,7 @@ export const createScreenSize = ({ store, setState }) => {
     setState(screenSize());
   };
 
-  window.addEventListener(
-    'resize',
-    setDebounce(setScreenSize, DEBOUNCE_DURATION)
-  );
+  window.addEventListener('resize', setDebounce(setScreenSize, DEBOUCNE_MSEC));
 
   onCleanup(() => {
     window.removeEventListener('resize', setScreenSize);

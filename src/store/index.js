@@ -3,8 +3,8 @@
 import { createResourceState, createContext, useContext } from 'solid-js';
 
 import { createCommon } from './createCommon';
+import { createScreenSize } from './createScreenSize';
 import { createSecret } from './createSecret';
-import { ScreenSizeContext, createScreenSize } from './createScreenSize';
 
 const StoreContext = createContext();
 
@@ -21,8 +21,8 @@ export const StoreProvider = props => {
   const store = [state, initialAction];
 
   createCommon({ store, loadState, setState });
-  createSecret({ store, loadState, setState });
   createScreenSize({ store, loadState, setState });
+  createSecret({ store, loadState, setState });
 
   return (
     <StoreContext.Provider value={store}>
@@ -32,4 +32,3 @@ export const StoreProvider = props => {
 };
 
 export const useStore = () => useContext(StoreContext);
-export const useScreenSize = () => useContext(ScreenSizeContext);

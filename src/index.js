@@ -6,7 +6,7 @@ import { App } from './app';
 
 render(
   () => (
-    <StoreProvider>
+    <StoreProvider initialRoute="home">
       <App />
     </StoreProvider>
   ),

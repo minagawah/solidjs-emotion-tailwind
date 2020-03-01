@@ -10,6 +10,7 @@ import { Loading } from '@/components/loading';
 import { Header } from '@/components/header';
 import { Home } from '@/components/home';
 import { Profile } from '@/components/profile';
+import { Canvas } from '@/components/canvas';
 
 const Settings = lazy(() => import('@/components/settings'));
 
@@ -35,30 +36,33 @@ export const App = () => {
    */
   createEffect(() => {
     ({ width, height } = store);
-    console.log(`[App] ${width} x ${height}`);
+    console.log(`[App] screen: ${width} x ${height}`);
   });
 
   actions.setScreenSize();
 
-  console.log(`[App] message: ${actions.getMessage()}`);
+  console.log(`[App] ${actions.getMessage()}`);
 
   return (
     <RouteProvider router={router}>
       <Header />
       <Suspense fallback={<Loading styles={loadingStyle} />}>
         <Switch fallback={<Home />}>
-          {/*
-           * For query param handling, look at the example provided by Solid.js:
-           * Real World Demo (routing)
-           * https://github.com/ryansolid/solid-realworld/blob/master/src/App.js
-           */}
-          <Match when={match('home', /^home/)}>
+          <Match when={match(/^home/)}>
             <Home />
           </Match>
-          <Match when={match('profile', /^profile/)}>
+          <Match when={match(/^profile/)}>
             <Profile />
           </Match>
-          <Match when={match('settings', /^settings/)}>
+          {/* Canvas: Top */}
+          <Match when={match(/^canvas$/)}>
+            <Canvas />
+          </Match>
+          {/* Canvas: Sub-Pages (with query parameters) */}
+          <Match when={match(/^canvas\/?(.*)$/)}>
+            <Canvas />
+          </Match>
+          <Match when={match(/^settings/)}>
             <Settings />
           </Match>
         </Switch>
