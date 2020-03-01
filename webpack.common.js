@@ -56,7 +56,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      chunks: ['solid', 'ramda', 'vendor', 'app'],
+      chunks: ['runtime', 'solid', 'ramda', 'vendor', 'app'],
       filename: 'index.html',
       template: './src/index.html',
     }),

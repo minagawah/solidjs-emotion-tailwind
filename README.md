@@ -7,6 +7,10 @@ Example webpack project using Solid.js with Emotion + Tailwind.
 [2. Installed NPM Pakcages](#installed-npm-packages)  
 [4. LICENSE](#license)  
 
+![screenshot](screenshot.png "Screenshot")
+
+[View Demo](http://tokyo800.jp/minagawah/solidjs-emotion-tailwind/)
+
 
 <a id="about"></a>
 ## 1. About
@@ -30,13 +34,19 @@ Features:
 Starting `webpack-dev-server`:
 
 ```bash
-yarn run start
+yarn start
 ```
 
 ESLint:
 
 ```bash
-yarn run lint
+yarn lint
+```
+
+Test (Jest):
+
+```bash
+yarn test
 ```
 
 ### Build
@@ -44,7 +54,7 @@ yarn run lint
 Build bundles to `build` directory:
 
 ```bash
-yarn run build
+yarn build
 ```
 
 
