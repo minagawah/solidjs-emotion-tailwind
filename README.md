@@ -19,12 +19,16 @@ A simple Solid.js project example.
 
 Features:
 - Webpack (split chunks, license extraction, etc.)
-- Route provider
 - Store provider (resize event, Local Storage, etc.)
+- Route provider (includes switching sub pages by query params)
 - Async examples (lazy load, Suspense, Show, etc.)
 - Emotion + Tailwind
 - ESLint + Prettier
 - Jest
+
+Extra Feature:
+- Fun with Canvas animation
+
 
 <a id="dev-build"></a>
 ## 2. Dev/Build
