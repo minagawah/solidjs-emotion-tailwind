@@ -21,6 +21,7 @@ import { canvasSize } from './helper';
 const wrapperStyle = css`
   padding: 0.1em;
   background-color: #fbfbfb;
+  ${tw`mt-1`}
 `;
 const canvasStyle = css`
   border: 1px solid #e0e0e0;
@@ -65,9 +66,12 @@ const Tripod = () => {
   onCleanup(() => {
     console.log('[canvas/Spring] ++++ onCleanup()');
     removeMouse();
-    canvas.removeEventListener('mousedown', onMouseDown, false);
-    canvas.removeEventListener('mouseup', onMouseUp, false);
-    canvas.removeEventListener('mousemove', onMouseMove, false);
+    canvas.removeEventListener('mousedown', onMouseDown);
+    canvas.removeEventListener('mouseup', onMouseUp);
+    canvas.removeEventListener('mousemove', onMouseMove);
+    canvas.removeEventListener('touchstart', onMouseDown);
+    canvas.removeEventListener('touchend', onMouseUp);
+    canvas.removeEventListener('touchmove', onMouseMove);
   });
 
   function reset() {
@@ -146,6 +150,7 @@ const Tripod = () => {
 
   function onMouseDown() {
     handles.forEach(handle => {
+      console.log(`[canvas/Tripod] (x:${mouse.x}, y:${mouse.y})`);
       if (withinRect(handle.getBounds(), mouse)) {
         movingHandle = handle;
       }
@@ -160,6 +165,7 @@ const Tripod = () => {
 
   function onMouseMove() {
     if (movingHandle) {
+      console.log(`[canvas/Tripod] (x:${mouse.x}, y:${mouse.y})`);
       movingHandle.x = mouse.x;
       movingHandle.y = mouse.y;
     }
@@ -186,6 +192,9 @@ const Tripod = () => {
       canvas.addEventListener('mousedown', onMouseDown, false);
       canvas.addEventListener('mouseup', onMouseUp, false);
       canvas.addEventListener('mousemove', onMouseMove, false);
+      canvas.addEventListener('touchstart', onMouseDown, false);
+      canvas.addEventListener('touchend', onMouseUp, false);
+      canvas.addEventListener('touchmove', onMouseMove, false);
 
       reset();
       draw();
@@ -195,6 +204,9 @@ const Tripod = () => {
   return (
     <>
       <h2>Tripod</h2>
+      <div>
+        Move the <span style="color:#00f;">small blue balls</span>
+      </div>
       <div id="wrapper" className={wrapperStyle}>
         <canvas id="canvas" ref={canvas} className={canvasStyle}></canvas>
       </div>

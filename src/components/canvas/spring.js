@@ -15,6 +15,7 @@ import { canvasSize } from './helper';
 const wrapperStyle = css`
   padding: 0.1em;
   background-color: #fbfbfb;
+  ${tw`mt-1`}
 `;
 
 const canvasStyle = css`
@@ -125,6 +126,7 @@ const Spring = () => {
   return (
     <>
       <h2>Spring</h2>
+      <div>Move around the spring.</div>
       <div id="wrapper" className={wrapperStyle}>
         <canvas id="canvas" ref={canvas} className={canvasStyle}></canvas>
       </div>
