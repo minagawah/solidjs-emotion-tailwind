@@ -16,7 +16,10 @@ import { useMouse } from '@/lib/mouse';
 import { useStore } from '@/store';
 
 import Ball from './ball';
-import { canvasSize } from './helper';
+import { getCanvasRatio, canvasSize } from './helper';
+
+const RATIO_DESKTOP = 16 / 9;
+const RATIO_MOBILE = 3 / 4;
 
 const wrapperStyle = css`
   padding: 0.1em;
@@ -30,7 +33,12 @@ const canvasStyle = css`
 
 const Tripod = () => {
   const [store] = useStore();
-  const [setMouse, removeMouse] = useMouse();
+
+  const [setMouse, removeMouse] = useMouse({
+    onMouseDown,
+    onMouseUp,
+    onMouseMove,
+  });
 
   const spring = 0.03;
   const friction = 0.85;
@@ -66,20 +74,40 @@ const Tripod = () => {
   onCleanup(() => {
     console.log('[canvas/Spring] ++++ onCleanup()');
     removeMouse();
-    canvas.removeEventListener('mousedown', onMouseDown);
-    canvas.removeEventListener('mouseup', onMouseUp);
-    canvas.removeEventListener('mousemove', onMouseMove);
-    canvas.removeEventListener('touchstart', onMouseDown);
-    canvas.removeEventListener('touchend', onMouseUp);
-    canvas.removeEventListener('touchmove', onMouseMove);
   });
+
+  function onMouseDown() {
+    handles.forEach(handle => {
+      if (withinRect(handle.getBounds(), mouse)) {
+        movingHandle = handle;
+      }
+    });
+  }
+
+  function onMouseUp() {
+    if (movingHandle) {
+      movingHandle = null;
+    }
+  }
+
+  function onMouseMove() {
+    if (movingHandle) {
+      movingHandle.x = mouse.x;
+      movingHandle.y = mouse.y;
+    }
+  }
 
   function reset() {
     if (canvas && screen_w && screen_h) {
+      const ratio = getCanvasRatio(RATIO_DESKTOP, RATIO_MOBILE)(
+        screen_w,
+        screen_h
+      );
+
       const { width, height } = canvasSize({
         width: screen_w,
         height: screen_h,
-        ratio: 16 / 9,
+        ratio,
         ref: canvas,
       });
       console.log(`[canvas/Spring] canvas: ${width}x${height}`);
@@ -148,29 +176,6 @@ const Tripod = () => {
     inProgress = false;
   }
 
-  function onMouseDown() {
-    handles.forEach(handle => {
-      console.log(`[canvas/Tripod] (x:${mouse.x}, y:${mouse.y})`);
-      if (withinRect(handle.getBounds(), mouse)) {
-        movingHandle = handle;
-      }
-    });
-  }
-
-  function onMouseUp() {
-    if (movingHandle) {
-      movingHandle = null;
-    }
-  }
-
-  function onMouseMove() {
-    if (movingHandle) {
-      console.log(`[canvas/Tripod] (x:${mouse.x}, y:${mouse.y})`);
-      movingHandle.x = mouse.x;
-      movingHandle.y = mouse.y;
-    }
-  }
-
   function init() {
     ctx = mouse = animId = void 0; // Reset all the previous.
 
@@ -185,17 +190,9 @@ const Tripod = () => {
       // }
       ball = new Ball({ radius: 20 });
       for (let i = 0; i < numHandles; i++) {
-        let handle = new Ball({ radius: 10, color: '#0000ff' });
+        let handle = new Ball({ radius: 15, color: '#f7df1e' });
         handles.push(handle);
       }
-
-      canvas.addEventListener('mousedown', onMouseDown, false);
-      canvas.addEventListener('mouseup', onMouseUp, false);
-      canvas.addEventListener('mousemove', onMouseMove, false);
-      canvas.addEventListener('touchstart', onMouseDown, false);
-      canvas.addEventListener('touchend', onMouseUp, false);
-      canvas.addEventListener('touchmove', onMouseMove, false);
-
       reset();
       draw();
     }
@@ -205,7 +202,7 @@ const Tripod = () => {
     <>
       <h2>Tripod</h2>
       <div>
-        Move the <span style="color:#00f;">small blue balls</span>
+        Move the <span style="color:#f7df1e;">small yellow balls</span>
       </div>
       <div id="wrapper" className={wrapperStyle}>
         <canvas id="canvas" ref={canvas} className={canvasStyle}></canvas>

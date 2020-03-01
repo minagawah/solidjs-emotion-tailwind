@@ -3,7 +3,8 @@
 const noop = () => {};
 
 export const useMouse = (params = {}) => {
-  const { duration = 100 } = params;
+  const { duration = 100, onMouseDown, onMouseUp, onMouseMove } = params;
+
   const mouse = {
     x: 0,
     y: 0,
@@ -19,23 +20,26 @@ export const useMouse = (params = {}) => {
     start = end = void 0;
   };
 
-  const touchPosition = event => {
-    if (!el || !inProgress) return;
-
-    let x;
-    let y;
-    const { touches = [] } = event;
-    const [touch = {}] = touches;
-    x = touch.clientX || 0;
-    y = touch.clientY || 0;
-    x -= el.offsetLeft;
-    y -= el.offsetTop;
-
-    return { x, y };
+  const executeCallback = (cb, args) => {
+    if (typeof cb === 'function') {
+      cb(args);
+    }
   };
 
-  const mousePosition = event => {
-    if (!el) return;
+  const assignPosition = (f = noop, event) => o => {
+    const { x = 0, y = 0 } = f(event);
+    o.x = x;
+    o.y = y;
+  };
+
+  /*
+   * =======================================
+   * Mouse Events
+   * =======================================
+   */
+
+  const getMousePosition = event => {
+    if (!el || !event) return;
 
     let x;
     let y;
@@ -59,18 +63,64 @@ export const useMouse = (params = {}) => {
     return { x, y };
   };
 
-  const onTouchStart = event => {
+  const mouseDownHandler = event => {
+    if (!el) return;
     event.preventDefault();
+
+    assignPosition(getMousePosition, event)(mouse);
+    executeCallback(onMouseDown, event);
+  };
+
+  const mouseUpHandler = event => {
+    if (!el) return;
+    event.preventDefault();
+
+    executeCallback(onMouseUp, event);
+  };
+
+  const mouseMoveHandler = event => {
+    if (!el) return;
+
+    assignPosition(getMousePosition, event)(mouse);
+    executeCallback(onMouseMove, event);
+  };
+
+  /*
+   * =======================================
+   * Touche Events
+   * =======================================
+   */
+
+  const getTouchPosition = event => {
+    if (!el || !event || !inProgress) return;
+
+    let x;
+    let y;
+
+    const { touches = [] } = event;
+    const [touch = {}] = touches;
+
+    x = touch.clientX || 0;
+    y = touch.clientY || 0;
+    x -= el.offsetLeft;
+    y -= el.offsetTop;
+
+    return { x, y };
+  };
+
+  const touchStartHandler = event => {
+    event.preventDefault();
+
     inProgress = true;
     start = new Date().getTime();
 
-    const { x, y } = touchPosition(event);
-    mouse.x = x;
-    mouse.y = y;
+    assignPosition(getTouchPosition, event)(mouse);
+    executeCallback(onMouseDown, event);
   };
 
-  const onTouchEnd = event => {
+  const touchEndHandler = event => {
     event.preventDefault();
+
     inProgress = false;
     end = new Date().getTime();
 
@@ -78,41 +128,42 @@ export const useMouse = (params = {}) => {
     if (delta > duration) {
       clear();
     }
+
+    executeCallback(onMouseUp, event);
   };
 
-  const onTouchMove = event => {
+  const touchMoveHandler = event => {
     if (!el || !inProgress) return;
-    const { x, y } = touchPosition(event);
-    mouse.x = x;
-    mouse.y = y;
-  };
 
-  const onMouseMove = event => {
-    if (!el) return;
-    const { x, y } = mousePosition();
-    mouse.x = x;
-    mouse.y = y;
+    assignPosition(getTouchPosition, event)(mouse);
+    executeCallback(onMouseMove, event);
   };
 
   const setMouse = element => {
     if (element) {
       el = element;
-      if (el) {
-        el.addEventListener('mousemove', onMouseMove);
-        el.addEventListener('touchmove', onTouchMove);
-        el.addEventListener('touchstart', onTouchStart);
-        el.addEventListener('touchend', onTouchEnd);
-      }
+      // Mouse Events
+      el.addEventListener('mousedown', mouseDownHandler, false);
+      el.addEventListener('mouseup', mouseUpHandler, false);
+      el.addEventListener('mousemove', mouseMoveHandler, false);
+      // Touch Events
+      el.addEventListener('touchstart', touchStartHandler, false);
+      el.addEventListener('touchend', touchEndHandler, false);
+      el.addEventListener('touchmove', touchMoveHandler, false);
     }
     return mouse;
   };
 
   const removeMouse = () => {
     if (el) {
-      el.removeEventListener('mousemove', onMouseMove);
-      el.removeEventListener('touchmove', onTouchMove);
-      el.removeEventListener('touchstart', onTouchStart);
-      el.removeEventListener('touchend', onTouchEnd);
+      // Mouse Events
+      el.removeEventListener('mousedown', mouseDownHandler);
+      el.removeEventListener('mouseup', mouseUpHandler);
+      el.removeEventListener('mousemove', mouseMoveHandler);
+      // Touch Events
+      el.removeEventListener('touchstart', touchStartHandler);
+      el.removeEventListener('touchend', touchEndHandler);
+      el.removeEventListener('touchmove', touchMoveHandler);
     }
   };
 

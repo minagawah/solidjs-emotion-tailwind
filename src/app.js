@@ -1,6 +1,6 @@
 /** @prettier */
 
-import { lazy, createEffect } from 'solid-js';
+import { lazy } from 'solid-js';
 import { css } from 'emotion';
 
 import { useStore, useScreenSize } from './store';
@@ -22,22 +22,10 @@ const loadingStyle = css`
 `;
 
 export const App = () => {
-  const [store, actions] = useStore();
+  const [, actions] = useStore();
 
   const router = createRouteHandler('home');
   const { match } = router;
-
-  let width = 0;
-  let height = 0;
-
-  /*
-   * Subscribe to the change in screen size so that
-   * locally defined "width" and "height" sync.
-   */
-  createEffect(() => {
-    ({ width, height } = store);
-    console.log(`[App] screen: ${width} x ${height}`);
-  });
 
   actions.setScreenSize();
 
