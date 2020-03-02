@@ -3,7 +3,12 @@
 const noop = () => {};
 
 export const useMouse = (params = {}) => {
-  const { duration = 100, onMouseDown, onMouseUp, onMouseMove } = params;
+  // const { duration = 100, onMouseDown, onMouseUp, onMouseMove } = params;
+
+  let duration = 100;
+  let mouseDownCallback = noop;
+  let mouseUpCallback = noop;
+  let mouseMoveCallback = noop;
 
   const mouse = {
     x: 0,
@@ -20,13 +25,13 @@ export const useMouse = (params = {}) => {
     start = end = void 0;
   };
 
-  const executeCallback = (cb, args) => {
+  const execCallback = (cb, args) => {
     if (typeof cb === 'function') {
       cb(args);
     }
   };
 
-  const assignPosition = (f = noop) => (o, event) => {
+  const assignPos = (f = noop) => (o, event) => {
     if (f && o) {
       const { x = 0, y = 0 } = f(event) || {};
       o.x = x;
@@ -68,23 +73,21 @@ export const useMouse = (params = {}) => {
   const mouseDownHandler = event => {
     if (!el) return;
     event.preventDefault();
-
-    assignPosition(getMousePosition)(mouse, event);
-    executeCallback(onMouseDown, event);
+    assignPos(getMousePosition)(mouse, event);
+    execCallback(mouseDownCallback, event);
   };
 
   const mouseUpHandler = event => {
     if (!el) return;
     event.preventDefault();
-
-    executeCallback(onMouseUp, event);
+    execCallback(mouseUpCallback, event);
   };
 
   const mouseMoveHandler = event => {
     if (!el) return;
 
-    assignPosition(getMousePosition)(mouse, event);
-    executeCallback(onMouseMove, event);
+    assignPos(getMousePosition)(mouse, event);
+    execCallback(mouseMoveCallback, event);
   };
 
   /*
@@ -116,8 +119,8 @@ export const useMouse = (params = {}) => {
     inProgress = true;
     start = new Date().getTime();
 
-    assignPosition(getTouchPosition)(mouse, event);
-    executeCallback(onMouseDown, event);
+    assignPos(getTouchPosition)(mouse, event);
+    execCallback(mouseDownCallback, event);
   };
 
   const touchEndHandler = event => {
@@ -131,18 +134,24 @@ export const useMouse = (params = {}) => {
       clear();
     }
 
-    executeCallback(onMouseUp, event);
+    execCallback(mouseUpCallback, event);
   };
 
   const touchMoveHandler = event => {
     if (!el || !inProgress) return;
-
-    assignPosition(getTouchPosition)(mouse, event);
-    executeCallback(onMouseMove, event);
+    assignPos(getTouchPosition)(mouse, event);
+    execCallback(mouseMoveCallback, event);
   };
 
-  const setMouse = element => {
+  const setMouse = (element, options = {}) => {
     if (element) {
+      ({
+        duration = 100,
+        onMouseDown: mouseDownCallback,
+        onMouseUp: mouseUpCallback,
+        onMouseMove: mouseMoveCallback,
+      } = options);
+
       el = element;
       // Mouse Events
       el.addEventListener('mousedown', mouseDownHandler, false);

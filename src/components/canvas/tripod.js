@@ -34,11 +34,7 @@ const canvasStyle = css`
 const Tripod = () => {
   const [store] = useStore();
 
-  const [setMouse, removeMouse] = useMouse({
-    onMouseDown,
-    onMouseUp,
-    onMouseMove,
-  });
+  const [setMouse, removeMouse] = useMouse();
 
   const spring = 0.03;
   const friction = 0.85;
@@ -184,7 +180,11 @@ const Tripod = () => {
     if (ctx) {
       // balls.length = 0;
       handles.length = 0;
-      mouse = setMouse(canvas);
+      mouse = setMouse(canvas, {
+        onMouseDown,
+        onMouseUp,
+        onMouseMove,
+      });
       // for (let i = 0; i < numBalls; i++) {
       //   balls.push(new Ball({ radius: 20 }));
       // }
