@@ -174,6 +174,10 @@ export const useMouse = (params = {}) => {
       el.removeEventListener('touchstart', touchStartHandler);
       el.removeEventListener('touchend', touchEndHandler);
       el.removeEventListener('touchmove', touchMoveHandler);
+
+      mouseDownCallback = noop;
+      mouseUpCallback = noop;
+      mouseMoveCallback = noop;
     }
   };
 
