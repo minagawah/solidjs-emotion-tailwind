@@ -26,10 +26,12 @@ export const useMouse = (params = {}) => {
     }
   };
 
-  const assignPosition = (f = noop, event) => o => {
-    const { x = 0, y = 0 } = f(event);
-    o.x = x;
-    o.y = y;
+  const assignPosition = (f = noop) => (o, event) => {
+    if (f && o) {
+      const { x = 0, y = 0 } = f(event) || {};
+      o.x = x;
+      o.y = y;
+    }
   };
 
   /*
@@ -67,7 +69,7 @@ export const useMouse = (params = {}) => {
     if (!el) return;
     event.preventDefault();
 
-    assignPosition(getMousePosition, event)(mouse);
+    assignPosition(getMousePosition)(mouse, event);
     executeCallback(onMouseDown, event);
   };
 
@@ -81,7 +83,7 @@ export const useMouse = (params = {}) => {
   const mouseMoveHandler = event => {
     if (!el) return;
 
-    assignPosition(getMousePosition, event)(mouse);
+    assignPosition(getMousePosition)(mouse, event);
     executeCallback(onMouseMove, event);
   };
 
@@ -114,7 +116,7 @@ export const useMouse = (params = {}) => {
     inProgress = true;
     start = new Date().getTime();
 
-    assignPosition(getTouchPosition, event)(mouse);
+    assignPosition(getTouchPosition)(mouse, event);
     executeCallback(onMouseDown, event);
   };
 
@@ -135,7 +137,7 @@ export const useMouse = (params = {}) => {
   const touchMoveHandler = event => {
     if (!el || !inProgress) return;
 
-    assignPosition(getTouchPosition, event)(mouse);
+    assignPosition(getTouchPosition)(mouse, event);
     executeCallback(onMouseMove, event);
   };
 
