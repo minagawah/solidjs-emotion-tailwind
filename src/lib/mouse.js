@@ -3,13 +3,6 @@
 const noop = () => {};
 
 export const useMouse = (params = {}) => {
-  // const { duration = 100, onMouseDown, onMouseUp, onMouseMove } = params;
-
-  let duration = 100;
-  let mouseDownCallback = noop;
-  let mouseUpCallback = noop;
-  let mouseMoveCallback = noop;
-
   const mouse = {
     x: 0,
     y: 0,
@@ -20,6 +13,12 @@ export const useMouse = (params = {}) => {
   let inProgress = false;
   let start;
   let end;
+
+  let duration = 100;
+
+  let mouseDownCallback = noop;
+  let mouseUpCallback = noop;
+  let mouseMoveCallback = noop;
 
   const clear = () => {
     start = end = void 0;
