@@ -14,10 +14,8 @@ export const Canvas = () => {
   const [state, setState] = createState({ page: '' });
 
   createEffect(() => {
-    const {
-      params: [page],
-    } = getParams() || {};
-
+    const { params } = getParams() || {};
+    const [page] = params || [];
     if (page) {
       setState({ page });
     }
