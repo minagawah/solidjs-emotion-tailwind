@@ -6,14 +6,11 @@ import { css } from 'emotion';
 import tw from 'tailwind.macro';
 
 import { int, requestAnimFrame, cancelAnimFrame } from '@/lib/utils';
+import { getCanvasRatio, canvasSize } from '@/lib/canvas';
 import { useMouse } from '@/lib/mouse';
 import { useStore } from '@/store';
 
 import Ball from './ball';
-import { getCanvasRatio, canvasSize } from './helper';
-
-const RATIO_DESKTOP = 16 / 9;
-const RATIO_MOBILE = 3 / 4;
 
 const wrapperStyle = css`
   padding: 0.1em;
@@ -62,16 +59,11 @@ const Spring = () => {
 
   function reset() {
     if (canvas && screen_w && screen_h) {
-      const ratio = getCanvasRatio(RATIO_DESKTOP, RATIO_MOBILE)(
-        screen_w,
-        screen_h
-      );
-
       const { width, height } = canvasSize({
         width: screen_w,
         height: screen_h,
-        ratio,
-        ref: canvas,
+        ratio: 16 / 9,
+        el: canvas,
       });
       console.log(`[canvas/Spring] canvas: ${width}x${height}`);
 

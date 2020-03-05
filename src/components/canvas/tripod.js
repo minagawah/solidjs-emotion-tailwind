@@ -12,14 +12,11 @@ import {
   cancelAnimFrame,
 } from '@/lib/utils';
 
+import { getCanvasRatio, canvasSize } from '@/lib/canvas';
 import { useMouse } from '@/lib/mouse';
 import { useStore } from '@/store';
 
 import Ball from './ball';
-import { getCanvasRatio, canvasSize } from './helper';
-
-const RATIO_DESKTOP = 16 / 9;
-const RATIO_MOBILE = 3 / 4;
 
 const wrapperStyle = css`
   padding: 0.1em;
@@ -95,16 +92,11 @@ const Tripod = () => {
 
   function reset() {
     if (canvas && screen_w && screen_h) {
-      const ratio = getCanvasRatio(RATIO_DESKTOP, RATIO_MOBILE)(
-        screen_w,
-        screen_h
-      );
-
       const { width, height } = canvasSize({
         width: screen_w,
         height: screen_h,
-        ratio,
-        ref: canvas,
+        ratio: 16 / 9,
+        el: canvas,
       });
       console.log(`[canvas/Spring] canvas: ${width}x${height}`);
 
@@ -202,7 +194,7 @@ const Tripod = () => {
     <>
       <h2>Tripod</h2>
       <div>
-        Move the <span style="color:#f7df1e;">small yellow balls</span>
+        Move the <span style="color:#ffca00;">small yellow balls</span>
       </div>
       <div id="wrapper" className={wrapperStyle}>
         <canvas id="canvas" ref={canvas} className={canvasStyle}></canvas>
