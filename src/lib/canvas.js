@@ -22,6 +22,11 @@ export const canvasSize = ({ width = 0, height = 0, ratio = 16 / 9, el }) => {
   // a little less than the screen height.
   let avail_h = height * 0.7 || 0;
 
+  // For mobile, fill the height.
+  if (height > width) {
+    h = avail_h;
+  }
+
   // When element is given, we can calculate
   // for actually available height.
   if (el) {
