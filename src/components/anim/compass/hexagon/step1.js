@@ -1,8 +1,14 @@
 /** @prettier */
 
-import { map, addIndex } from 'ramda';
+import { map } from 'ramda';
 import { int, mapKeys } from '@/lib/utils';
-import { importPIXI, removeChildren } from '@/lib/pixi';
+import {
+  importPIXI,
+  removeSpriteTexturesFromCache,
+  removeChildren,
+  makeSprite,
+} from '@/lib/pixi';
+
 import { getDotSize, getLabelSize } from '../helper';
 
 const DOT_KEYS = ['o'];
@@ -54,15 +60,17 @@ export const createStep1 = async (options = {}) => {
     // console.log('[anim/Compass] (Hexagon: Step 1) ++++ reset()');
     $_.data = { dot: {}, label: {}, circle: {} };
 
+    // Reset data for CIRCLE.
     $_.data.circle = { ...DEFAULT_PROPERTIES['circle'] };
     $_.data.circle.stroke = PIXI.utils.string2hex(stroke);
 
     map(key => {
+      // Reset data for DOTS.
       $_.data.dot[key] = { ...DEFAULT_PROPERTIES['dot'] };
       $_.data.dot[key].x = 0;
       $_.data.dot[key].y = 0;
       $_.data.dot[key].fill = PIXI.utils.string2hex(fill);
-
+      // Reset data for LABELS.
       $_.data.label[key] = { ...DEFAULT_PROPERTIES['label'] };
       $_.data.label[key].x = 0;
       $_.data.label[key].y = 0;
@@ -72,11 +80,19 @@ export const createStep1 = async (options = {}) => {
 
     $_.atOnce = false;
 
-    if ($_.dot) {
-      mapKeys(key => {
-        $_.dot[key] && $_.dot[key].clear(); // Clear graphics.
-      }, $_.dot);
-    }
+    // Remove texture cache for DOTS and LABELS.
+    map(
+      type => {
+        if ($_[type]) {
+          mapKeys(key => {
+            if ($_[type][key]) {
+              removeSpriteTexturesFromCache($_[type][key]);
+            }
+          }, $_[type]);
+        }
+      },
+      ['dot', 'label']
+    );
 
     $_.circle && $_.circle.clear();
 
@@ -88,11 +104,13 @@ export const createStep1 = async (options = {}) => {
     $_.reset();
     $_.ct && removeChildren($_.ct);
     map(
-      key => {
-        $_[key] &&
-          mapKeys(key2 => {
-            $_[key][key2] && $_[key][key2].destroy();
-          }, $_[key]);
+      type => {
+        $_[type] &&
+          mapKeys(key => {
+            if ($_[type][key]) {
+              $_[type][key].destroy();
+            }
+          }, $_[type]);
       },
       ['dot', 'label']
     );
@@ -114,9 +132,11 @@ export const createStep1 = async (options = {}) => {
     // Create graphics and texts.
     $_.dot = {};
     $_.label = {};
+
+    // Using Sprite instead of Graphics for performance.
     map(key => {
-      $_.dot[key] = new PIXI.Graphics();
-      $_.label[key] = new PIXI.Text(key.toUpperCase());
+      $_.dot[key] = makeSprite(new PIXI.Graphics());
+      $_.label[key] = makeSprite(new PIXI.Text('dummy'));
       $_.ct.addChild($_.dot[key], $_.label[key]);
     }, DOT_KEYS);
   };
@@ -143,7 +163,7 @@ export const createStep1 = async (options = {}) => {
     $_.data.circle.cy = 0;
 
     // Calculate size, x, and y.
-    addIndex(map)((key, i) => {
+    map(key => {
       const dotpos = getDotPos[key](view);
       $_.data.dot[key].size = dotsize;
       $_.data.dot[key].x = dotpos.x;
@@ -167,21 +187,28 @@ export const createStep1 = async (options = {}) => {
     // Draw DOTS
     map(key => {
       const { size, x, y, fill } = $_.data.dot[key];
-      $_.dot[key].clear();
-      $_.dot[key].lineStyle(0);
-      $_.dot[key].beginFill(fill, 1);
-      $_.dot[key].drawCircle(x, y, size);
-      $_.dot[key].endFill();
+      const g = new PIXI.Graphics();
+      g.lineStyle(0);
+      g.beginFill(fill, 1);
+      g.drawCircle(0, 0, size);
+      g.endFill();
+      $_.dot[key] = makeSprite(g, $_.dot[key]);
+      $_.dot[key].x = x;
+      $_.dot[key].y = y;
       $_.dot[key].visible = false;
+      g.destroy();
     }, DOT_KEYS);
 
     // Draw LABELS
     map(key => {
       const { x, y, style } = $_.data.label[key];
-      $_.label[key].style = style;
+      const text = new PIXI.Text(key.toUpperCase(), style);
+      text.updateText();
+      $_.label[key] = makeSprite(text, $_.label[key]);
       $_.label[key].x = x;
       $_.label[key].y = y;
       $_.label[key].visible = false;
+      // text.destroy()
     }, DOT_KEYS);
   };
 

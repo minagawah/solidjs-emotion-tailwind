@@ -41,3 +41,20 @@ export const removeSpriteTexturesFromCache = sprite => {
   }
   PIXI.BaseTexture.removeFromCache(baseTexture);
 };
+
+export const makeSprite = (src = new PIXI.Graphics(), sprite = null) => {
+  let texture = null;
+  if (src instanceof PIXI.Graphics) {
+    texture = src.generateCanvasTexture();
+  }
+  if (src instanceof PIXI.Text) {
+    texture = src.texture;
+  }
+  if (sprite) {
+    removeSpriteTexturesFromCache(sprite);
+    sprite.texture = texture;
+  } else {
+    sprite = new PIXI.Sprite(texture);
+  }
+  return sprite;
+};
