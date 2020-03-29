@@ -27,7 +27,7 @@ Features:
 - Jest
 
 Extra Feature:
-- Fun with Canvas animation
+- Fun with Canvas animations (Native Canvas + PIXI.js)
 
 
 <a id="dev-build"></a>
@@ -70,9 +70,11 @@ yarn build
 
 - solid-js
 - ramda
+- pixi.js
+- pixi.js-legacy
 
 ```bash
-yarn add solid-js ramda
+yarn add solid-js ramda pixi.js pixi.js-legacy
 ```
 
 

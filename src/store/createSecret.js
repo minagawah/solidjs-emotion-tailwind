@@ -3,44 +3,33 @@
 import { createEffect } from 'solid-js';
 
 export const createSecret = ({ store, setState }) => {
-  // "actions" contains previously defined actions.
+  // "actions" have previously defined actions.
   const [state, actions] = store;
 
-  /** @private */
   const getFromLocalStorage = () => localStorage.getItem('secret');
-
-  /** @private */
   const setLocalStorage = secret => localStorage.setItem('secret', secret);
-
-  /** @private */
   const removeLocalStorage = () => localStorage.removeItem('secret');
 
-  const setSecret = secret => setState({ secret });
-  const removeSecret = () => setState({ secret: null });
+  let checked = false;
 
-  // Whether initialized already.
-  let ready = false;
-
-  const init = () => {
-    const local = getFromLocalStorage();
-    if (local) {
-      setSecret(local);
-    }
-    ready = true;
-  };
-
-  init();
+  const localSecret = getFromLocalStorage();
+  if (localSecret) {
+    setState({ secret: localSecret });
+  }
+  checked = true;
 
   /**
-   * Having '1234' as default secret value, it overwrites
-   * the one already stored in local storage with '1234'.
-   * So, we need '!getFromLocalStorage' to check nothing is
-   * stored in local storage. However, this prevents from
-   * writing values to local storage second time onward.
-   * So, we need 'ready' to allow it for second time onward.
+   * Because "createEffect" runs at the initial startup,
+   * it overwrites (with default "1234") the value
+   * already saved in the local storage. To prevent this
+   * from happening, we are checking (using "getFromLocalStorage")
+   * to see if we already have anything saved in the local storage.
+   * However, because of this, it would not allow us to save
+   * new values forever. Thus, we have "checked"
+   * to allow us to save new values from the second time onward.
    */
   createEffect(() => {
-    if (!getFromLocalStorage() || ready) {
+    if (!getFromLocalStorage() || checked) {
       if (state.secret) {
         setLocalStorage(state.secret);
       } else {
@@ -49,11 +38,16 @@ export const createSecret = ({ store, setState }) => {
     }
   });
 
-  // Add properties to previously defined "actions".
+  // Add new actions to previously defined "actions".
   store[1] = {
     ...actions,
-    init,
-    setSecret,
-    removeSecret,
+    setSecret: (secret = '') => {
+      setState({ secret });
+      setLocalStorage(secret);
+    },
+    removeSecret: () => {
+      setState({ secret: null });
+      removeLocalStorage();
+    },
   };
 };

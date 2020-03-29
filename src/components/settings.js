@@ -1,82 +1,81 @@
 /** @prettier */
 
-// import { afterEffects } from 'solid-js';
 import { css } from 'emotion';
 import tw from 'tailwind.macro';
 
 import { useStore } from '@/store';
+import { darkgray, pink, yellow } from '@/constants/colors';
 
-const secretStyle = css`
-  ${tw`p-1 pl-4 pr-4 text-gray-200 bg-black`}
-`;
+import { titleStyle } from './styles';
 
-const secretInputStyle = css`
-  ${tw`pt-1 pb-1`}
-  font-size: 1.1em;
-`;
-
-const secretButtonStyle = css`
-  ${tw`ml-2 p-1 pl-2 pr-2`}
-`;
-
-const secretWrapperStyle = css`
+const wrapperStyle = css`
   ${tw`mt-2 flex flex-row flex-no-wrap justify-start content-center items-center`}
 `;
 
-const Settings = () => {
+const padding = tw`p-1 pl-4 pr-4`;
+
+// font-weight ---> [normal] 400 [medium] 500 [bold] 700
+const secretStyle = css`
+  ${tw`text-center font-bold`}
+  ${padding}
+  background-color: ${yellow};
+  color: ${darkgray};
+`;
+
+const buttonStyle = css`
+  ${tw`ml-2 border-none text-center font-bold`}
+  ${padding}
+  background-color: ${pink};
+  min-width: 90px;
+`;
+
+const inputStyle = css`
+  ${tw`border-none font-bold`}
+  ${padding}
+`;
+
+export const Settings = () => {
   const [store, actions] = useStore();
 
-  let inputRef;
+  let ref;
 
   const removeSecret = () => actions.removeSecret();
 
   const setSecret = () => {
-    const { value: secret } = inputRef || {};
-    if (secret) {
-      actions.setSecret(secret);
+    const { value } = ref || {};
+    if (value) {
+      actions.setSecret(value);
     }
   };
 
-  // afterEffects(() => {
-  //   console.log(inputRef);
-  // });
-  //
-  // TODO: 'afterEffects' does not fire...
-  setTimeout(() => {
-    console.log(`[Settings] inputRef: ${inputRef ? 'yes' : 'no'}`);
-  }, 400);
-
   return (
     <>
-      <h1>Settings</h1>
+      <h2 className={titleStyle}>Settings</h2>
 
-      <p>This component is lazy loaded.</p>
+      <p>Set/Delete a secret code to/from local storage.</p>
 
-      <p>Setting/Removing secret codes to/from local storage.</p>
-
-      <div className={secretWrapperStyle}>
+      <div className={wrapperStyle}>
         <div className={secretStyle}>
           <Show when={store.secret} fallback="(no secret)">
             {store.secret}
           </Show>
         </div>
-        <button className={secretButtonStyle} onClick={removeSecret}>
-          Remove Secret
+        <button className={buttonStyle} onClick={removeSecret}>
+          Delete
         </button>
       </div>
-      <div className={secretWrapperStyle}>
+
+      <div className={wrapperStyle}>
         <input
-          ref={inputRef}
+          ref={ref}
           type="text"
           value={store.secret}
-          className={secretInputStyle}
+          className={inputStyle}
         />
-        <button className={secretButtonStyle} onClick={setSecret}>
-          Set Secret
+        <button className={buttonStyle} onClick={setSecret}>
+          Set
         </button>
       </div>
     </>
   );
 };
-
-export default Settings;

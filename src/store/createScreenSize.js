@@ -4,7 +4,7 @@ import { onCleanup } from 'solid-js';
 
 import { useDebounce } from '@/lib/debounce';
 
-const DEBOUCNE_MSEC = 200;
+const DEBOUCNE_MSEC = 250;
 
 const screenSize = () => ({
   width: window.innerWidth || 0,
@@ -12,7 +12,7 @@ const screenSize = () => ({
 });
 
 export const createScreenSize = ({ store, setState }) => {
-  // "actions" contains previously defined actions.
+  // "actions" have previously defined actions.
   const [, actions] = store;
   const [setDebounce, cancelDebounce] = useDebounce();
 
@@ -27,7 +27,7 @@ export const createScreenSize = ({ store, setState }) => {
     cancelDebounce();
   });
 
-  // Add properties to previously defined "actions".
+  // Add new actions to previously defined "actions".
   store[1] = {
     ...actions,
     setScreenSize,

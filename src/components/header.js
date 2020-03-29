@@ -3,68 +3,70 @@
 import { css } from 'emotion';
 import tw from 'tailwind.macro';
 
-import { useStore } from '@/store';
+import { black, darkgray, pink, yellow } from '@/constants/colors';
 
-import logo from '@/assets/logo-js.svg';
-
-const logoSize = 50;
-const logoStyle = css`
-  width: ${logoSize}px;
-  height: ${logoSize}px;
-`;
+const greenYellow = '#aef71e';
 
 const flexRow = css`
-  ${tw`flex flex-row flex-no-wrap justify-start content-end items-end`}
+  ${tw`flex flex-row flex-no-wrap justify-start content-center items-stretch`}
 `;
 
-const marginLeft = css`
-  margin-left: 0.5em;
+const flexCol = css`
+  ${tw`flex flex-col flex-no-wrap justify-center content-center items-center`}
 `;
 
-const headerStyle = flexRow;
-
-const wrapperStyle = css`
-  ${tw`flex flex-col flex-no-wrap justify-start content-start items-start`}
-`;
-
-const screenSizeStyle = css`
+const logoLinkStyle = css`
+  ${tw`p-1 font-bold`}
+  display: inline-block;
+  ${flexCol}
+  background-color: ${pink};
   font-size: 0.9em;
-  color: #c0c0c0;
-  ${marginLeft}
+  &:link,
+  &:visited {
+    color: ${darkgray};
+  }
+  &:hover,
+  &:active {
+    background-color: ${greenYellow};
+    color: ${darkgray};
+    text-decoration: none;
+  }
 `;
 
-const menuStyle = css`
-  font-size: 1.2em;
-  ${flexRow}
+const linkStyle = css`
+  ${tw`ml-3 p-1 font-bold`}
+  display: inline-block;
+  ${flexCol}
+  width: auto;
+  background-color: ${yellow};
+  font-size: 0.9em;
+  &:link,
+  &:visited {
+    color: ${black};
+  }
+  &:hover,
+  &:active {
+    color: ${black};
+    background-color: ${pink};
+    text-decoration: none;
+  }
 `;
-
-const linkStyle = marginLeft;
 
 export const Header = () => {
-  const [store] = useStore();
-
   return (
-    <header className={headerStyle}>
-      <img src={logo} alt="logo" className={logoStyle} />
-      <nav className={wrapperStyle}>
-        <div className={screenSizeStyle}>
-          {store.width}x{store.height}
-        </div>
-        <div className={menuStyle}>
-          <a href="#home" className={linkStyle}>
-            Home
-          </a>
-          <a href="#profile" className={linkStyle}>
-            Profile
-          </a>
-          <a href="#canvas" className={linkStyle}>
-            Canvas
-          </a>
-          <a href="#settings" className={linkStyle}>
-            Settings
-          </a>
-        </div>
-      </nav>
+    <header className={flexRow}>
+      <a href="#top" className={logoLinkStyle}>
+        SolidJS
+      </a>
+      <a href="#profile" className={linkStyle}>
+        Profile
+      </a>
+      <a href="#anim" className={linkStyle}>
+        Animations
+      </a>
+      <a href="#settings" className={linkStyle}>
+        Settings
+      </a>
     </header>
   );
 };

@@ -12,20 +12,18 @@ import {
   cancelAnimFrame,
 } from '@/lib/utils';
 
-import { getCanvasRatio, canvasSize } from '@/lib/canvas';
 import { useMouse } from '@/lib/mouse';
 import { useStore } from '@/store';
+import { white, pink, blue } from '@/constants/colors';
 
-import Ball from './ball';
+import { getCanvasSize, Ball } from './helper';
 
 const wrapperStyle = css`
-  padding: 0.1em;
-  background-color: #fbfbfb;
-  ${tw`mt-1`}
+  ${tw`mt-2 flex flex-row flex-no-wrap justify-center content-start items-start`}
 `;
+
 const canvasStyle = css`
-  border: 1px solid #e0e0e0;
-  ${tw`bg-white`}
+  border: 1px solid ${pink};
 `;
 
 const Tripod = () => {
@@ -41,7 +39,7 @@ const Tripod = () => {
   const numHandles = 3;
   const handles = [];
 
-  let canvas; // This is a Ref.
+  let canvasRef; // This is a Ref.
 
   let ctx;
   let mouse;
@@ -52,11 +50,11 @@ const Tripod = () => {
 
   let inProgress = false;
 
-  let screen_w = 0;
-  let screen_h = 0;
+  let screen = { width: 0, height: 0 };
 
   createEffect(() => {
-    ({ width: screen_w, height: screen_h } = store);
+    screen.width = store.width;
+    screen.height = store.height;
     reset();
   });
 
@@ -91,22 +89,47 @@ const Tripod = () => {
   }
 
   function reset() {
-    if (canvas && screen_w && screen_h) {
-      const { width, height } = canvasSize({
-        width: screen_w,
-        height: screen_h,
+    if (canvasRef && screen.width && screen.height) {
+      const { width, height } = getCanvasSize({
+        ...screen,
+        el: canvasRef,
         ratio: 16 / 9,
-        el: canvas,
       });
       console.log(`[canvas/Spring] canvas: ${width}x${height}`);
 
-      canvas.width = width;
-      canvas.height = height;
+      canvasRef.width = width;
+      canvasRef.height = height;
 
       handles.forEach((handle, i) => {
-        handle.x = Math.random() * canvas.width;
-        handle.y = Math.random() * canvas.height;
+        handle.x = Math.random() * canvasRef.width;
+        handle.y = Math.random() * canvasRef.height;
       });
+    }
+  }
+
+  function init() {
+    ctx = mouse = animId = void 0; // Reset all the previous.
+
+    ctx = canvasRef && canvasRef.getContext('2d');
+
+    if (ctx) {
+      // balls.length = 0;
+      handles.length = 0;
+      mouse = setMouse(canvasRef, {
+        onMouseDown,
+        onMouseUp,
+        onMouseMove,
+      });
+      // for (let i = 0; i < numBalls; i++) {
+      //   balls.push(new Ball({ radius: 20 }));
+      // }
+      ball = new Ball({ radius: 20 });
+      for (let i = 0; i < numHandles; i++) {
+        let handle = new Ball({ radius: 15, color: blue });
+        handles.push(handle);
+      }
+      reset();
+      draw();
     }
   }
 
@@ -124,9 +147,9 @@ const Tripod = () => {
     if (inProgress) return;
 
     inProgress = true;
-    animId = requestAnimFrame(draw, canvas);
+    animId = requestAnimFrame(draw, canvasRef);
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvasRef.width, canvasRef.height);
 
     handles.forEach((handle, i) => {
       const dx = handle.x - ball.x;
@@ -139,6 +162,7 @@ const Tripod = () => {
     ball.x += ball.vx;
     ball.y += ball.vy;
 
+    ctx.strokeStyle = white;
     ctx.beginPath();
     // balls.forEach((ball, i) => {
     //   if (i === 0) {
@@ -164,40 +188,15 @@ const Tripod = () => {
     inProgress = false;
   }
 
-  function init() {
-    ctx = mouse = animId = void 0; // Reset all the previous.
-
-    ctx = canvas && canvas.getContext('2d');
-
-    if (ctx) {
-      // balls.length = 0;
-      handles.length = 0;
-      mouse = setMouse(canvas, {
-        onMouseDown,
-        onMouseUp,
-        onMouseMove,
-      });
-      // for (let i = 0; i < numBalls; i++) {
-      //   balls.push(new Ball({ radius: 20 }));
-      // }
-      ball = new Ball({ radius: 20 });
-      for (let i = 0; i < numHandles; i++) {
-        let handle = new Ball({ radius: 15, color: '#f7df1e' });
-        handles.push(handle);
-      }
-      reset();
-      draw();
-    }
-  }
-
   return (
     <>
       <h2>Tripod</h2>
       <div>
-        Move the <span style="color:#ffca00;">small yellow balls</span>
+        A pure Canvas API example. Move the{' '}
+        <span style="color:#00c5ff;">small blue balls</span>
       </div>
       <div id="wrapper" className={wrapperStyle}>
-        <canvas id="canvas" ref={canvas} className={canvasStyle}></canvas>
+        <canvas id="canvas" ref={canvasRef} className={canvasStyle}></canvas>
       </div>
     </>
   );

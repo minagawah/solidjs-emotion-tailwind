@@ -15,7 +15,7 @@ module.exports = merge(common, {
   devtool: 'cheap-module-source-map',
   optimization: {
     runtimeChunk: {
-      name: 'runtime' // All share the same `runtime.js`.
+      name: 'runtime', // All share the same `runtime.js`.
     },
     minimize: true,
     splitChunks: {
@@ -26,18 +26,28 @@ module.exports = merge(common, {
         vendors: false, // Disable the default.
         solid: {
           name: 'solid',
-          test: new RegExp('[\\/]node_modules[\\/](solid-js)[\\/]')
+          test: new RegExp('[\\/]node_modules[\\/](solid-js)[\\/]'),
         },
         ramda: {
           name: 'ramda',
-          test: new RegExp('[\\/]node_modules[\\/](ramda)[\\/]')
+          test: new RegExp('[\\/]node_modules[\\/](ramda)[\\/]'),
+        },
+        pixi: {
+          name: 'pixi',
+          test: new RegExp('[\\/]node_modules[\\/](pixi.js)[\\/]'),
+        },
+        pixilegacy: {
+          name: 'pixilegacy',
+          test: new RegExp('[\\/]node_modules[\\/](pixi.js-legacy)[\\/]'),
         },
         vendor: {
           name: 'vendor',
-          test: new RegExp('[\\/]node_modules[\\/](!solid-js)(!ramda)[\\/]')
-        }
-      }
-    }
+          test: new RegExp(
+            '[\\/]node_modules[\\/](!solid-js)(!ramda)(!p5)(!pixi.js)(!pixi.js-legacy)[\\/]'
+          ),
+        },
+      },
+    },
   },
   module: {
     rules: [
@@ -45,25 +55,25 @@ module.exports = merge(common, {
         test: /\.css$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader
+            loader: MiniCssExtractPlugin.loader,
           },
           'css-loader',
           {
             loader: 'postcss-loader',
             options: {
               ident: 'postcss',
-              plugins: [tailwindcss(), autoprefixer()]
-            }
-          }
-        ]
-      }
-    ]
+              plugins: [tailwindcss(), autoprefixer()],
+            },
+          },
+        ],
+      },
+    ],
   },
   plugins: [
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
-      chunkFilename: '[id].[hash].css'
+      chunkFilename: '[id].[hash].css',
     }),
-    new LicenseWebpackPlugin()
-  ]
+    new LicenseWebpackPlugin(),
+  ],
 });

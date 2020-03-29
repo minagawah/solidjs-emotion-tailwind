@@ -2,59 +2,69 @@
 
 import { createResourceState } from 'solid-js';
 import { css } from 'emotion';
+import tw from 'tailwind.macro';
 
 import { randInt } from '@/lib/utils';
+import { darkgray, pink } from '@/constants/colors';
 
-const divinations = [
+import { titleStyle } from './styles';
+
+const DELAY = 500;
+
+const DIVINATIONS = [
   'You will have a wonderful day',
   'You are doomed',
   'Depends on what you aim for',
 ];
 
-const padding = 'padding: 0.2em 0.6em;';
+const padding = tw`p-1 pl-4 pr-4`;
+
+const wrapperStyle = css`
+  ${tw`mt-2 flex flex-row flex-no-wrap justify-start content-center items-center`}
+  border: 1px solid ${pink};
+  max-width: 540px;
+`;
 
 const labelStyle = css`
+  ${tw`font-bold`}
   ${padding}
-  font-weight: bold;
-  background-color: #f7df1e;
+  color: ${darkgray};
+  background-color: ${pink};
 `;
 
 const messageStyle = css`
   ${padding}
-  background-color: #ededed;
+  background-color: ${darkgray};
 `;
 
-const messageWaitStyle = css`
-  ${messageStyle}
-  color: #aeaeae;
-`;
-
-// Resolves after 650 msec.
-const getDivination = async () =>
-  await new Promise(resolve => {
+// Resolves after 500 msec.
+const getDivination = () =>
+  new Promise(resolve => {
     setTimeout(() => {
-      const index = randInt(0, divinations.length);
-      return resolve(divinations[index]);
-    }, 650);
+      const index = randInt(0, DIVINATIONS.length);
+      return resolve(DIVINATIONS[index]);
+    }, DELAY);
   });
 
-const PleaseWait = () => (
-  <span className={messageWaitStyle}>Please wait...</span>
-);
+const PleaseWait = () => <div className={messageStyle}>Please wait...</div>;
 
 export const Profile = () => {
   const [state, load] = createResourceState();
 
-  // For 'state.message' to load, it takes 650 msec.
+  // For "state.message" to load, it takes 500 msec.
   load({ message: getDivination() });
 
   return (
     <>
-      <h1>Profile</h1>
-      <div>
-        <span className={labelStyle}>message</span>
+      <h2 className={titleStyle}>Profile</h2>
+
+      <p>Intentionally delaying the component load for {DELAY}msec.</p>
+
+      <div className={wrapperStyle}>
+        <div className={labelStyle}>message</div>
+
         <Show when={state.message} fallback={PleaseWait}>
-          <span className={messageStyle}>{state.message}</span>
+          <div className={messageStyle}>{state.message}</div>
         </Show>
       </div>
     </>

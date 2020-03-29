@@ -1,10 +1,15 @@
 /** @prettier */
 
-import { compose, identity, tap } from 'ramda';
+import { map, addIndex } from 'ramda';
 
 export const int = Math.trunc;
 
-export const boo = compose(tap(console.log), identity);
+export const mapKeys = (f, o) => Object.keys(o).map(f);
+
+export const mapWithIndex = addIndex(map);
+
+const slice = Array.prototype.slice;
+const concat = arr => Array.prototype.concat.bind(arr);
 
 export const rand = (min = 0, max = 10) => Math.random() * (max - min) + min;
 
@@ -15,14 +20,14 @@ export const deg = a => a * (180 / Math.PI);
 export const rad = a => a * (Math.PI / 180);
 
 /**
- * Get the norm for `val` between `min` and `max`.
+ * Get the norm for "val" between "min" and "max".
  * Ex. norm(75, 0, 100) ---> 0.75
  */
 export const norm = (val, min, max) => (val - min) / (max - min);
 
 /**
- * Apply `norm` (the linear interpolate value) to the range
- * between `min` and `max` (usually between `0` and `1`).
+ * Apply "norm" (the linear interpolate value) to the range
+ * between "min" and "max" (usually between "0" and "1").
  * Ex. lerp(0.5, 0, 100) ---> 50
  */
 export const lerp = (norm, min, max) => min + (max - min) * norm;
@@ -62,6 +67,17 @@ export const withinRect = (rect, p) =>
 
 /** See if the given point falls within the arc's radius. */
 export const withinArc = (p, a) => distBetween(p, a) <= a.radius;
+
+export const isRadianFirstQuad = (rad = 0) => rad >= 0 && rad < Math.PI / 2;
+
+export const isRadianSecondQuad = (rad = 0) =>
+  rad >= Math.PI / 2 && rad < Math.PI;
+
+export const isRadianThirdQuad = (rad = 0) =>
+  rad >= Math.PI && rad < Math.PI * 1.5;
+
+export const isRadianFourthQuad = (rad = 0) =>
+  rad >= Math.PI * 1.5 && rad < Math.PI * 2;
 
 export const colorToRGB = (color, alpha = 1) => {
   if (typeof color === 'string' && color[0] === '#') {

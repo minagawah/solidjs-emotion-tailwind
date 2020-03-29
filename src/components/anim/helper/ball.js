@@ -1,9 +1,10 @@
 /** @prettier */
 
-import { colorToHexString } from '../../lib/utils';
+import { colorToHexString } from '@/lib/utils';
+import { pink } from '@/constants/colors';
 
 function Ball(args = {}) {
-  const { radius = 40, color = '#ff0000', mass = 1 } = args;
+  const { radius = 40, color = pink, mass = 1 } = args;
   this.x = 0;
   this.y = 0;
   this.radius = radius;

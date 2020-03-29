@@ -8,13 +8,12 @@ import { RouteProvider, createRouteHandler } from './router';
 
 import { Loading } from '@/components/loading';
 import { Header } from '@/components/header';
-import { Home } from '@/components/home';
+import { Top } from '@/components/top';
+import { Anim } from '@/components/anim';
 import { Profile } from '@/components/profile';
-import { Canvas } from '@/components/canvas';
+import { Settings } from '@/components/settings';
 
-const Settings = lazy(() => import('@/components/settings'));
-
-import './style.css';
+import './styles.css';
 
 const loadingStyle = css`
   margin-top: 1.8em;
@@ -24,7 +23,7 @@ const loadingStyle = css`
 export const App = () => {
   const [, actions] = useStore();
 
-  const router = createRouteHandler('home');
+  const router = createRouteHandler('top');
   const { match } = router;
 
   actions.setScreenSize();
@@ -35,20 +34,20 @@ export const App = () => {
     <RouteProvider router={router}>
       <Header />
       <Suspense fallback={<Loading styles={loadingStyle} />}>
-        <Switch fallback={<Home />}>
-          <Match when={match(/^home/)}>
-            <Home />
+        <Switch fallback={<Top />}>
+          <Match when={match(/^top/)}>
+            <Top />
+          </Match>
+          {/* Anim: Top */}
+          <Match when={match(/^anim$/)}>
+            <Anim />
+          </Match>
+          {/* Anim: Sub-Pages (with query parameters) */}
+          <Match when={match(/^anim\/?(.*)$/)}>
+            <Anim />
           </Match>
           <Match when={match(/^profile/)}>
             <Profile />
-          </Match>
-          {/* Canvas: Top */}
-          <Match when={match(/^canvas$/)}>
-            <Canvas />
-          </Match>
-          {/* Canvas: Sub-Pages (with query parameters) */}
-          <Match when={match(/^canvas\/?(.*)$/)}>
-            <Canvas />
           </Match>
           <Match when={match(/^settings/)}>
             <Settings />

@@ -19,6 +19,12 @@ export const RouteProvider = props => {
   );
 };
 
+/**
+ * Usage:
+ * const router = createRouteHandler('top');
+ * const { match } = router;
+ * <Match when={match(/^top/)}>
+ */
 export const createRouteHandler = initial => {
   const [location, setLocation] = createSignal(
     window.location.hash.slice(2) || initial
@@ -36,25 +42,22 @@ export const createRouteHandler = initial => {
 
   onCleanup(() => {
     window.removeEventListener('hashchange', locationHandler);
+    params = void 0;
   });
-
-  const match = test => {
-    const loc = location().split('?')[0];
-    const match = test.exec(loc);
-
-    if (match) {
-      params = { params: match.slice(1) };
-      triggerParams();
-    }
-    return !!match;
-  };
-
-  // TODO: Consider revising the comma operator.
-  const getParams = () => (read(), params);
 
   return {
     location,
-    match,
-    getParams,
+    match: test => {
+      const loc = location().split('?')[0];
+      const match = test.exec(loc);
+
+      if (match) {
+        params = { params: match.slice(1) };
+        triggerParams();
+      }
+      return !!match;
+    },
+    // TODO: Consider revising the comma operator.
+    getParams: () => (read(), params),
   };
 };

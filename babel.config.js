@@ -9,14 +9,20 @@ module.exports = {
           browsers: [
             'last 1 chrome versions',
             'last 1 firefox versions',
-            'last 1 safari versions'
-          ]
-        }
-      }
+            'last 1 safari versions',
+          ],
+        },
+      },
     ],
-    'solid'
+    'solid',
   ],
   plugins: [
-    'macros' // Using 'babel-plugin-macros' for Emotion + Tailwind.
-  ]
+    [
+      'emotion',
+      {
+        autoLabel: true,
+      },
+    ],
+    'macros', // Using 'babel-plugin-macros' for Emotion + Tailwind.
+  ],
 };
