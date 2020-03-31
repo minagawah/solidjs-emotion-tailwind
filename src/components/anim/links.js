@@ -17,8 +17,8 @@ export const Links = () => {
       <a href="#anim/tripod" className={linkStyle}>
         Canvas: Tripod
       </a>
-      <a href="#anim/basics" className={linkStyle}>
-        PIXI: Basics
+      <a href="#anim/shapes" className={linkStyle}>
+        PIXI: Shapes
       </a>
       <a href="#anim/compass" className={linkStyle}>
         PIXI: Compass

@@ -7,7 +7,7 @@ import tw from 'tailwind.macro';
 import { int } from '@/lib/utils';
 import { importPIXI } from '@/lib/pixi';
 import { useStore } from '@/store';
-import { darkgray, lightgray, pink, cyan } from '@/constants/colors';
+import { darkgray, lightgray, cyan } from '@/constants/colors';
 
 import { getCanvasSize } from '../helper';
 
@@ -72,6 +72,7 @@ const Hexagon = (props = {}) => {
   onCleanup(() => {
     console.log('[anim/Compass] (Hexagon) ++++ onCleanup()');
     reset();
+    // cancelAnimFrame(update);
   });
 
   function reset() {
@@ -97,6 +98,7 @@ const Hexagon = (props = {}) => {
     if (!isWebGL) {
       console.log('[anim/Compass] (hexagon) LEGACY');
     }
+
     if (!ref) {
       console.log('[anim/Compass] (hexagon) No "ref"');
     }
@@ -114,8 +116,8 @@ const Hexagon = (props = {}) => {
         autoDensity: true, // Make it 1/2 the size for retina.
       });
 
-      step1 = await createStep1({ fill: pink, stroke: pink });
-      step2 = await createStep2({ fill: pink });
+      step1 = await createStep1();
+      step2 = await createStep2();
 
       app.stage.addChild(step1.ct);
       app.stage.addChild(step2.ct);
@@ -135,7 +137,9 @@ const Hexagon = (props = {}) => {
         el: wrapperRef,
         ratio: 4 / 3,
       });
-      console.log(`[anim/Compass] (hexagon) ${view.width}x${view.height}`);
+      console.log(
+        `[anim/Compass] (hexagon) ${int(view.width)}x${int(view.height)}`
+      );
 
       app.renderer.resize(view.width, view.height);
       step1.resize(view);
@@ -149,6 +153,8 @@ const Hexagon = (props = {}) => {
 
     step1 && step1.update(delta);
     step2 && step2.update(delta);
+
+    // requestAnimFrame(update);
 
     inProgress = false;
   }
@@ -176,10 +182,14 @@ const Hexagon = (props = {}) => {
   return (
     <article className={contentStyle}>
       <h4 className={titleStyle}>Regular Hexagon in a Circle</h4>
+
+      {/* BEGIN: Body */}
       <div className={bodyStyle}>
         <div ref={wrapperRef} className={canvasWrapperStyle}>
           <canvas ref={ref} className={canvasStyle}></canvas>
         </div>
+
+        {/* BEGIN: Control Wrapper */}
         <div className={controlWrapperStyle}>
           <div className={controlStyle}>
             {/* Step 1 */}

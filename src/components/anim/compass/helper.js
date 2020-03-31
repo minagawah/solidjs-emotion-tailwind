@@ -17,8 +17,8 @@ export const getCanvasSize = (args = {}) => {
     wrapper && wrapper.getBoundingClientRect();
 
   if (wrap_w && wrap_h) {
-    width = int(wrap_w * 0.97);
-    height = int(width / ratio);
+    width = wrap_w * 0.97;
+    height = width / ratio;
   }
 
   return { width, height };
@@ -30,6 +30,6 @@ export const getDotSize = (view = {}) => {
 };
 
 export const getLabelSize = (view = {}) => {
-  const size = int(view.width * 0.08);
+  const size = int(view.width * 0.05);
   return size < 4 ? 4 : size;
 };

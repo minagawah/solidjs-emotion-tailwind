@@ -76,9 +76,8 @@ export const bodyStyle = css`
 `;
 
 const bodyInner = `
-  width: 35vw;
+  width: 40vw;
   min-width: 195px;
-  max-width: 320px;
 `;
 
 export const controlWrapperStyle = css`

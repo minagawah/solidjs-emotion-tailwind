@@ -1,40 +1,33 @@
 /** @prettier */
 
-const keys = ['WAIT', 'PROGRESS', 'SUCCESS', 'FAIL'];
+export const WAIT = 'WAIT';
+export const PROGRESS = 'PROGRESS';
+export const SUCCESS = 'SUCCESS';
+export const FAIL = 'FAIL';
 
-const mapping = {
-  WAIT: 0,
-  PROGRESS: 1,
-  SUCCESS: 2,
-  FAIL: 3,
-};
+const KEYS = [WAIT, PROGRESS, SUCCESS, FAIL];
 
-export const createStateMachine = (initialState = 'WAIT') => {
-  const $_ = { state: 0 };
+export const createStateMachine = (givenStatus = WAIT) => {
+  const $_ = { status: WAIT };
 
-  $_.IN_PROGRESS = $_.inProgress = () => $_.state === 1;
+  $_.IN_PROGRESS = () => $_.status === PROGRESS;
 
-  $_.get = () => keys[$_.state];
-
-  $_.set = key => {
-    if (!key) throw new Error('No state');
-    if (!keys.includes(key)) {
-      throw new Error(`No such key: ${key}`);
+  const setStatus = status => {
+    if (!status) throw new Error('No status');
+    if (!KEYS.includes(status)) {
+      throw new Error(`No such key: ${status}`);
     }
-    $_.state = mapping[key];
+    $_.status = status;
   };
 
   const tapSetter = key => () => {
-    $_.set(key);
+    setStatus(key);
     return key;
   };
 
-  $_.WAIT = tapSetter('WAIT');
-  $_.PROGRESS = tapSetter('PROGRESS');
-  $_.SUCCESS = tapSetter('SUCCESS');
-  $_.FAIL = tapSetter('FAIL');
-
-  $_.set(initialState);
+  KEYS.forEach(key => {
+    $_[key] = tapSetter(key);
+  });
 
   return $_;
 };

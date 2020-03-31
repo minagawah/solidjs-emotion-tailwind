@@ -1,72 +1,79 @@
 /** @prettier */
 
-import { map, addIndex } from 'ramda';
+import { map } from 'ramda';
 import { int, mapKeys } from '@/lib/utils';
-import { importPIXI, removeChildren } from '@/lib/pixi';
+import { createStateMachine } from '@/lib/statemachine';
+import { white, pink } from '@/constants/colors';
+import {
+  importPIXI,
+  removeSpriteTexturesFromCache,
+  removeChildren,
+  makeSprite,
+} from '@/lib/pixi';
+
 import { getDotSize, getLabelSize } from '../helper';
 
 import { getRadius } from './step1.js';
 
+let PIXI;
+
+const SPEED = Math.PI * 0.05;
+// const BEG_ANGLE = Math.PI * (1 / 8);
+// const END_ANGLE = Math.PI * (7 / 8);
+const BEG_ANGLE = 0;
+const END_ANGLE = Math.PI;
+
 const DOT_KEYS = ['a'];
 
 const DEFAULT_PROPERTIES = {
-  dot: { size: 1, x: 0, y: 0, fill: '#ffffff' },
+  dot: { size: 1, x: 0, y: 0, fill: white },
   label: {
     x: 0,
     y: 0,
     style: {
       fontFamily: 'Arial',
       fontSize: 1,
-      fill: '#ffffff',
+      fill: white,
     },
+  },
+  arc: {
+    stroke: null,
+    cx: 0, // Center of the arc (X).
+    cy: 0, // Center of the arc (Y).
+    beg: BEG_ANGLE, // Starting angle (radian) for the arc.
+    end: BEG_ANGLE, // Ending angle (radian) for the arc.
+    radius: 1,
   },
 };
 
-let PIXI;
+/** @private */
+const getDotPos = {
+  a: (view = {}) => {
+    const { width, height } = view;
+    const radius = getRadius(view);
+    return {
+      x: width / 2,
+      y: height / 2 + radius,
+    };
+  },
+};
 
 export const createStep2 = async (options = {}) => {
   if (!PIXI) {
     PIXI = await importPIXI();
   }
 
-  const { fill = '#ffffff' } = options;
+  const { stroke = pink, fill = pink } = options;
 
   const $_ = {};
 
-  let status;
+  let machine;
+  let cnt = 0;
 
   $_.getStatus = () => status;
 
-  $_.reset = () => {
-    // console.log('[anim/Compass] (Hexagon: Step 2) ++++ reset()');
-    $_.data = { dot: {}, label: {} };
-
-    map(key => {
-      $_.data.dot[key] = { ...DEFAULT_PROPERTIES['dot'] };
-      $_.data.dot[key].x = 0;
-      $_.data.dot[key].y = 0;
-      $_.data.dot[key].fill = PIXI.utils.string2hex(fill);
-
-      $_.data.label[key] = { ...DEFAULT_PROPERTIES['label'] };
-      $_.data.label[key].x = 0;
-      $_.data.label[key].y = 0;
-      $_.data.label[key].style.fontSize = 10;
-      $_.data.label[key].style.fill = fill;
-    }, DOT_KEYS);
-
-    $_.atOnce = false;
-
-    if ($_.dot) {
-      mapKeys(key => {
-        $_.dot[key] && $_.dot[key].clear(); // Clear graphics.
-      }, $_.dot);
-    }
-
-    status = 'WAIT';
-  };
-
   $_.destroy = () => {
-    // console.log('[anim/Compass] (Hexagon: Step 2) ++++ destroy()');
+    console.log('[anim/Compass] (Hexagon: Step 2) ++++ destroy()');
     $_.reset();
     $_.ct && removeChildren($_.ct);
     map(
@@ -78,27 +85,75 @@ export const createStep2 = async (options = {}) => {
       },
       ['dot', 'label']
     );
-    $_.data = $_.dot = $_.label = $_.ct = status = void 0;
+    $_.arc && $_.arc.destroy();
+    $_.dummy && $_.dummy.g && $_.dummy.g.destroy();
+    $_.data = $_.dot = $_.label = $_.ct = $_.dummy = machine = void 0;
+  };
+
+  $_.reset = () => {
+    $_.data = { dot: {}, label: {}, arc: {} };
+
+    // Reset data for ARC.
+    $_.data.arc = { ...DEFAULT_PROPERTIES['arc'] };
+    $_.data.arc.stroke = PIXI.utils.string2hex(stroke);
+
+    // Reset data for DOTS and LABELS.
+    map(key => {
+      $_.data.dot[key] = { ...DEFAULT_PROPERTIES['dot'] };
+      $_.data.dot[key].fill = PIXI.utils.string2hex(fill);
+      $_.data.label[key] = { ...DEFAULT_PROPERTIES['label'] };
+      $_.data.label[key].style.fontSize = 10;
+      $_.data.label[key].style.fill = fill;
+    }, DOT_KEYS);
+
+    $_.atOnce = false;
+
+    // Removing texture cache.
+    map(
+      type => {
+        if ($_[type]) {
+          mapKeys(key => {
+            if ($_[type][key]) {
+              removeSpriteTexturesFromCache($_[type][key]);
+            }
+          }, $_[type]);
+        }
+      },
+      ['dot', 'label']
+    );
+
+    $_.arc && $_.arc.clear();
+
+    machine.WAIT();
+
+    cnt = 0;
   };
 
   $_.init = () => {
-    // console.log('[anim/Compass] (Hexagon: Step 2) ++++ init()');
-    status = 'WAIT';
+    machine = createStateMachine();
+
     $_.reset();
+
     $_.ct = new PIXI.Container();
 
-    // Create graphics and texts.
+    $_.dummy = { g: new PIXI.Graphics() };
+    $_.ct.addChild($_.dummy.g);
+
+    $_.arc = new PIXI.Graphics();
+    $_.arc.rotation = Math.PI; // Begins on the left.
+    $_.ct.addChild($_.arc);
+
     $_.dot = {};
     $_.label = {};
+
     map(key => {
-      $_.dot[key] = new PIXI.Graphics();
-      $_.label[key] = new PIXI.Text(key.toUpperCase());
+      $_.dot[key] = makeSprite(new PIXI.Graphics());
+      $_.label[key] = makeSprite(new PIXI.Text('dummy'));
       $_.ct.addChild($_.dot[key], $_.label[key]);
     }, DOT_KEYS);
   };
 
   $_.resize = (view = {}) => {
-    // console.log('[anim/Compass] (Hexagon: Step 2) ++++ resize()');
     const { width, height } = view;
 
     if (!width || !height) return;
@@ -106,19 +161,11 @@ export const createStep2 = async (options = {}) => {
     const dotsize = getDotSize(view);
     const labelsize = getLabelSize(view);
 
-    const getDotPos = {
-      a: (view = {}) => {
-        const { width, height } = view;
-        const radius = getRadius(view);
-        return {
-          x: int(width / 2),
-          y: int(height - (height / 2 - radius)),
-        };
-      },
-    };
+    $_.data.arc.radius = getRadius(view);
+    $_.data.arc.cx = 0;
+    $_.data.arc.cy = 0;
 
-    // Calculate size, x, and y.
-    addIndex(map)((key, i) => {
+    map(key => {
       const dotpos = getDotPos[key](view);
       $_.data.dot[key].size = dotsize;
       $_.data.dot[key].x = dotpos.x;
@@ -131,52 +178,109 @@ export const createStep2 = async (options = {}) => {
     $_.ct.x = 0;
     $_.ct.y = 0;
 
-    // Draw DOTS
     map(key => {
       const { size, x, y, fill } = $_.data.dot[key];
-      $_.dot[key].clear();
-      $_.dot[key].lineStyle(0);
-      $_.dot[key].beginFill(fill, 1);
-      $_.dot[key].drawCircle(x, y, size);
-      $_.dot[key].endFill();
+      const g = new PIXI.Graphics();
+      g.lineStyle(0);
+      g.beginFill(fill, 1);
+      g.drawCircle(0, 0, size);
+      g.endFill();
+      // Simply replacing the texture.
+      $_.dot[key] = makeSprite(g, $_.dot[key]);
+      $_.dot[key].pivot.x = size; // sprite needs pivotting
+      $_.dot[key].pivot.y = size; // sprite needs pivotting
+      $_.dot[key].x = x;
+      $_.dot[key].y = y;
       $_.dot[key].visible = false;
+      g.destroy();
     }, DOT_KEYS);
 
-    // Draw LABELS
     map(key => {
       const { x, y, style } = $_.data.label[key];
-      $_.label[key].style = style;
+      const text = new PIXI.Text(key.toUpperCase(), style);
+      text.updateText();
+      // Simply replacing the texture.
+      $_.label[key] = makeSprite(text, $_.label[key]);
       $_.label[key].x = x;
       $_.label[key].y = y;
       $_.label[key].visible = false;
+      // text.destroy()
     }, DOT_KEYS);
+
+    // (({ x, y }) => {
+    //   const { g } = $_.dummy;
+    //   // const fillColor = PIXI.utils.string2hex(fill);
+    //   g.clear();
+    //   g.lineStyle(1, 0xffffff);
+    //   g.drawRect(0, y, width, 30);
+    //   g.visible = false;
+    // })(getDotPos.a(view));
+
+    // ARC is NOT drawn here, but every "resize".
+    (({ x, y }) => {
+      $_.arc.x = x;
+      $_.arc.y = y;
+    })(getDotPos.a(view));
+
+    if (machine.IN_PROGRESS()) {
+      $_.data.arc.end = BEG_ANGLE;
+    }
   };
 
   $_.update = (delta = 0) => {
-    const isVisible = status === 'PROGRESS';
+    const inProgress = machine.IN_PROGRESS();
+
+    $_.dummy.g.visible = inProgress;
+
     map(key => {
-      $_.dot[key].visible = isVisible;
-      $_.label[key].visible = isVisible;
+      $_.dot[key].visible = inProgress;
+      $_.label[key].visible = inProgress;
     }, DOT_KEYS);
+
+    if (inProgress) {
+      if ($_.data.arc.end < END_ANGLE) {
+        if ($_.atOnce) {
+          $_.data.arc.end = END_ANGLE; // Draw the arc at once.
+        } else {
+          $_.data.arc.end += SPEED; // Gradually draw.
+        }
+        $_.arc.clear();
+        $_.arc.lineStyle(1, $_.data.arc.stroke);
+        $_.arc.arc(
+          $_.data.arc.cx,
+          $_.data.arc.cy,
+          $_.data.arc.radius,
+          $_.data.arc.beg,
+          $_.data.arc.end
+        );
+      }
+    }
+    // cnt++;
   };
 
   $_.run = (view, options = {}) => {
     const { atOnce } = options;
     $_.reset();
+
     if (typeof atOnce === 'boolean') {
       $_.atOnce = atOnce;
     }
+
+    if (stroke) {
+      $_.data.arc.stroke = PIXI.utils.string2hex(stroke);
+    }
+
     $_.resize(view);
-    status = 'PROGRESS';
+    machine.PROGRESS();
   };
 
   $_.runAtOnce = (view, options) => {
     $_.run(view, { atOnce: true, ...options });
   };
 
-  $_.pause = () => (status = 'WAIT');
-  $_.resume = () => (status = 'PROGRESS');
-  $_.stop = () => (status = 'SUCCESS');
+  $_.pause = () => machine.WAIT();
+  $_.resume = () => machine.PROGRESS();
+  $_.stop = () => machine.SUCCESS();
 
   $_.init();
 
