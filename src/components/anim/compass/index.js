@@ -16,7 +16,7 @@ const Compass = () => {
   });
 
   function init() {
-    console.clear();
+    // console.clear();
   }
 
   return (

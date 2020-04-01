@@ -79,36 +79,6 @@ export const isRadianThirdQuad = (rad = 0) =>
 export const isRadianFourthQuad = (rad = 0) =>
   rad >= Math.PI * 1.5 && rad < Math.PI * 2;
 
-export const colorToRGB = (color, alpha = 1) => {
-  if (typeof color === 'string' && color[0] === '#') {
-    color = parseInt(color.slice(1), 16);
-  }
-  const arr = [];
-  arr[0] = (color >> 16) & 0xff;
-  arr[1] = (color >> 8) & 0xff;
-  arr[2] = color & 0xff;
-  alpha = alpha < 0 ? 0 : alpha > 1 ? 1 : alpha;
-  if (alpha === 1) {
-    arr[3] = alpha;
-  }
-  return `rbg(${arr.join(',')}`;
-};
-
-/* eslint-disable indent */
-export const colorToNumber = color =>
-  typeof color === 'number'
-    ? color | 0
-    : parseInt(
-        typeof color === 'string' && color[0] === '#' ? color.slice(1) : color,
-        16
-      );
-/* eslint-enable indent */
-
-export const colorToHexString = color =>
-  typeof color === 'number'
-    ? `#${('00000' + (color | 0).toString(16)).substr(-6)}`
-    : color;
-
 export const requestAnimFrame =
   window.requestAnimationFrame ||
   window.webkitRequestAnimationFrame ||

@@ -2,6 +2,7 @@
 
 import { map } from 'ramda';
 import { int, mapKeys } from '@/lib/utils';
+import { str_to_hex } from '@/lib/color';
 import { createStateMachine } from '@/lib/statemachine';
 import { white, pink } from '@/constants/colors';
 import {
@@ -95,12 +96,13 @@ export const createStep2 = async (options = {}) => {
 
     // Reset data for ARC.
     $_.data.arc = { ...DEFAULT_PROPERTIES['arc'] };
-    $_.data.arc.stroke = PIXI.utils.string2hex(stroke);
+    // Use "str_to_hex" alternatively.
+    $_.data.arc.stroke = str_to_hex(stroke);
 
     // Reset data for DOTS and LABELS.
     map(key => {
       $_.data.dot[key] = { ...DEFAULT_PROPERTIES['dot'] };
-      $_.data.dot[key].fill = PIXI.utils.string2hex(fill);
+      $_.data.dot[key].fill = str_to_hex(fill);
       $_.data.label[key] = { ...DEFAULT_PROPERTIES['label'] };
       $_.data.label[key].style.fontSize = 10;
       $_.data.label[key].style.fill = fill;
@@ -209,7 +211,7 @@ export const createStep2 = async (options = {}) => {
 
     // (({ x, y }) => {
     //   const { g } = $_.dummy;
-    //   // const fillColor = PIXI.utils.string2hex(fill);
+    //   // const fillColor = str_to_hex(fill);
     //   g.clear();
     //   g.lineStyle(1, 0xffffff);
     //   g.drawRect(0, y, width, 30);
@@ -267,10 +269,11 @@ export const createStep2 = async (options = {}) => {
     }
 
     if (stroke) {
-      $_.data.arc.stroke = PIXI.utils.string2hex(stroke);
+      $_.data.arc.stroke = str_to_hex(stroke);
     }
 
     $_.resize(view);
+
     machine.PROGRESS();
   };
 

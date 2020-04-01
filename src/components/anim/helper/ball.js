@@ -1,6 +1,6 @@
 /** @prettier */
 
-import { colorToHexString } from '@/lib/utils';
+import { hex_to_str } from '@/lib/color';
 import { pink } from '@/constants/colors';
 
 function Ball(args = {}) {
@@ -14,7 +14,7 @@ function Ball(args = {}) {
   this.rotation = 0;
   this.scaleX = 1;
   this.scaleY = 1;
-  this.color = colorToHexString(color);
+  this.color = hex_to_str(color);
   this.lineWidth = 1;
 }
 
