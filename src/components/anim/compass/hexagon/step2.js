@@ -19,12 +19,10 @@ import { getRadius } from './step1.js';
 let PIXI;
 
 const SPEED = Math.PI * 0.05;
-// const BEG_ANGLE = Math.PI * (1 / 8);
-// const END_ANGLE = Math.PI * (7 / 8);
 const BEG_ANGLE = 0;
 const END_ANGLE = Math.PI;
 
-const DOT_KEYS = ['a'];
+const DOT_KEYS = ['a', 'b', 'f'];
 
 const DEFAULT_PROPERTIES = {
   dot: { size: 1, x: 0, y: 0, fill: white },
@@ -48,16 +46,36 @@ const DEFAULT_PROPERTIES = {
 };
 
 /** @private */
-const getDotPos = {
-  a: (view = {}) => {
+const getDotPos = (() => {
+  const a = (view = {}) => {
     const { width, height } = view;
     const radius = getRadius(view);
     return {
       x: width / 2,
       y: height / 2 + radius,
     };
-  },
-};
+  };
+
+  const b = (view = {}) => {
+    const apos = a(view);
+    const radius = getRadius(view);
+    return {
+      x: apos.x - (radius * Math.sqrt(3)) / 2,
+      y: apos.y - radius / 2,
+    };
+  };
+
+  const f = (view = {}) => {
+    const apos = a(view);
+    const radius = getRadius(view);
+    return {
+      x: apos.x + (radius * Math.sqrt(3)) / 2,
+      y: apos.y - radius / 2,
+    };
+  };
+
+  return { a, b, f };
+})();
 
 export const createStep2 = async (options = {}) => {
   if (!PIXI) {

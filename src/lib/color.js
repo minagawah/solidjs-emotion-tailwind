@@ -15,6 +15,7 @@ export const str_to_hex = str => {
   }
   return parseInt(hex, 16);
 };
+
 export const strToHex = str_to_hex; // alias
 
 /**
@@ -31,18 +32,8 @@ export const hex_to_str = hex => {
   }
   return str;
 };
-export const hexToStr = hex_to_str; // alias
 
-// export const hex_to_rgb = (hex, alpha = 1) => {
-//   const arr = [];
-//   arr[0] = (hex >> 16) & 0xff;
-//   arr[1] = (hex >> 8) & 0xff;
-//   arr[2] = hex & 0xff;
-//   alpha = alpha < 0 ? 0 : alpha > 1 ? 1 : alpha;
-//   if (alpha === 1) {
-//     arr[3] = alpha;
-//   }
-// };
+export const hexToStr = hex_to_str; // alias
 
 /**
  * HEX --> RGB
@@ -61,10 +52,8 @@ export const hex_to_rgb = (hex, alpha = 1) => {
   }
   return rgb;
 };
-export const hexToRgb = hex_to_rgb; // alias
 
-export const rgb_to_rgbstr = (rgb = []) => `rbg(${rgb.join(',')}`;
-export const rgbToRgbStr = rgb_to_rgbstr; // alias
+export const hexToRgb = hex_to_rgb; // alias
 
 /**
  * String HEX --> RGB
@@ -119,7 +108,6 @@ export const rgb_to_hsl = (rgb = []) => {
 
   return [h, s, l];
 };
-// END OF: rgb_to_hsl
 
 export const rgbToHsl = rgb_to_hsl; // alias
 
@@ -183,7 +171,6 @@ export const hsl_to_rgb = (hsl = []) => {
 
   return [r, g, b];
 };
-// END OF: hsl_to_rgb
 
 export const hslToRgb = hsl_to_rgb; // alias
 
@@ -209,6 +196,7 @@ export const rgb_to_str = (rgb = []) => {
 
   return `#${hexR}${hexG}${hexB}`;
 };
+
 export const rgbToStr = rgb_to_str; // alias
 
 /**
