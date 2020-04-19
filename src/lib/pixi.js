@@ -20,6 +20,13 @@ export const importPIXI = async () => {
   return PIXI;
 };
 
+export const getPixiPoint = () => {
+  if (!PIXI) {
+    throw new Error('No PIXI');
+  }
+  return PIXI.Point;
+};
+
 /**
  * @param {Object} [o] - PIXI.Container
  */

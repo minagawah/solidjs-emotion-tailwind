@@ -3,7 +3,7 @@
 import { css } from 'emotion';
 import tw from 'tailwind.macro';
 
-import { white, black, lightgray, blue, pink } from '@/constants/colors';
+import { white, black, blue, pink } from '@/constants/colors';
 
 /*
   padding-left: 0.4em;
