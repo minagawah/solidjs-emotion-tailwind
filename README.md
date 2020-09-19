@@ -3,8 +3,7 @@
 Example webpack project using Solid.js with Emotion + Tailwind.
 
 **Update:**  
-**(2020/9/18)**  
-**(1) core.js (2) twin.macro instead of tailwind.macro**
+**(2020/9/18) (1) core.js (2) twin.macro instead of tailwind.macro**
 
 [1. About](#about)  
 [2. Dev/Build](#dev-build)  
