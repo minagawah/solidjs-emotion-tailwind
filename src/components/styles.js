@@ -1,7 +1,7 @@
 /** @prettier */
 
 import { css } from 'emotion';
-import tw from 'tailwind.macro';
+import tw from 'twin.macro';
 
 import { white, black, blue, pink } from '@/constants/colors';
 
@@ -16,9 +16,7 @@ export const titleStyle = css`
   color: ${white};
 `;
 
-export const menuWrapperStyle = css`
-  ${tw`mt-1 flex flex-row flex-no-wrap justify-start content-end items-end`}
-`;
+export const menuWrapperStyle = tw`mt-1 flex flex-row flex-no-wrap justify-start content-end items-end`;
 
 export const menuLinkStyle = css`
   ${tw`mr-2 font-bold`}

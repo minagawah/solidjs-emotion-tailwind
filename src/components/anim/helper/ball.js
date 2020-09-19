@@ -18,7 +18,7 @@ function Ball(args = {}) {
   this.lineWidth = 1;
 }
 
-Ball.prototype.draw = function(ctx) {
+Ball.prototype.draw = function (ctx) {
   ctx.save();
   ctx.translate(this.x, this.y);
   ctx.rotate(this.rotation);
@@ -35,7 +35,7 @@ Ball.prototype.draw = function(ctx) {
   ctx.restore();
 };
 
-Ball.prototype.getBounds = function() {
+Ball.prototype.getBounds = function () {
   return {
     x: this.x - this.radius,
     y: this.y - this.radius,

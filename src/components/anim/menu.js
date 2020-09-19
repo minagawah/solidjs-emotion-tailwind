@@ -1,8 +1,5 @@
 /** @prettier */
 
-// import { css } from 'emotion';
-// import tw from 'tailwind.macro';
-
 import { menuWrapperStyle, menuLinkStyle } from '../styles';
 
 export const Menu = () => {

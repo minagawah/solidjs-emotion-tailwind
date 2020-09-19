@@ -48,6 +48,7 @@
  * "$_.spr" is never destroyed once created.
  */
 
+import { lazy } from 'solid-js';
 import { pick } from 'ramda';
 import { int, defined } from '@/lib/utils';
 import {
@@ -55,6 +56,8 @@ import {
   removeSpriteTexturesFromCache,
   removeChildren,
 } from '@/lib/pixi';
+
+const { generateCanvasTexture } = lazy(() => import('@pixi/canvas-graphics'));
 
 const noop = () => {};
 
@@ -147,10 +150,14 @@ export const createShape = async (params = {}) => {
 
     let g = given_draw($_, new PIXI.Graphics());
 
+    // const _generateCanvasTexture = gx = PIXI.legacy ? gx.generateCanvasTexture : generateCanvasTexture;
+
     if ($_.spr) {
       removeSpriteTexturesFromCache($_.spr);
+      // $_.spr.texture = _generateCanvasTexture(g)();
       $_.spr.texture = g.generateCanvasTexture();
     } else {
+      // $_.spr = new PIXI.Sprite(_generateCanvasTexture(g)());
       $_.spr = new PIXI.Sprite(g.generateCanvasTexture());
     }
 

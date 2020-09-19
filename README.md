@@ -15,6 +15,9 @@ Example webpack project using Solid.js with Emotion + Tailwind.
 <a id="about"></a>
 ## 1. About
 
+**Update:  **
+**2020.9.18 (1) `core.js` (2) `twin.macro` instead of `tailwind.macro`**
+
 A simple Solid.js project example.
 
 Features:
@@ -22,7 +25,7 @@ Features:
 - Store provider (resize event, Local Storage, etc.)
 - Route provider (includes switching sub pages by query params)
 - Async examples (lazy load, Suspense, Show, etc.)
-- Emotion + Tailwind
+- Emotion + Tailwind (using `twin.macro`)
 - ESLint + Prettier
 - Jest
 
@@ -68,27 +71,45 @@ yarn build
 
 ### prod
 
+For main features:
 - solid-js
 - ramda
 - pixi.js
 - pixi.js-legacy
+- @pixi/canvas-graphics
+
+For CSS (Emotion + TailwindCSS):
+- emotion
+- tailwindcss
+- twin.macro
 
 ```bash
-yarn add solid-js ramda pixi.js pixi.js-legacy
+yarn add solid-js ramda emotion tailwindcss twin.macro pixi.js pixi.js-legacy
 ```
 
 
 ### dev
 
-For Babel:
+For Babel:  
+`@babel/polyfill` has been deprecated, we use `core-js`.
+
 - @babel/core
 - @babel/preset-env
+- @babel/cli
+- core-js@3
+- @babel/runtime-corejs3
+
+For Babel (for Emotion):
+- babel-plugin-macros
+
+For Babel (for Solid):
 - babel-preset-solid
 
-For ESLint:
+For ESLint + Prettier:
 - babel-eslint
 - eslint
 - eslint-loader
+- prettier
 
 For Webpack:
 - webpack
@@ -114,19 +135,13 @@ Although `autoprefixer` and `normalize` are already in `tailwindcss`, we need `a
 - autoprefixer
 - mini-css-extract-plugin
 
-For CSS (emotion + tailwindcss):
-
-- emotion
-- babel-plugin-macros
-- tailwind.macro@next
-
 For Jest:
 
 - jest
 - jest-emotion
 
 ```bash
-yarn add --dev @babel/core @babel/preset-env @babel/plugin-transform-runtime babel-preset-solid babel-eslint eslint eslint-loader webpack webpack-cli webpack-dev-server webpack-merge html-webpack-plugin clean-webpack-plugin babel-loader file-loader license-webpack-plugin css-loader style-loader postcss-loader autoprefixer mini-css-extract-plugin emotion babel-plugin-macros tailwind.macro@next jest jest-emotion
+yarn add --dev @babel/core @babel/preset-env @babel/cli core-js@3 @babel/runtime-corejs3 babel-plugin-macros babel-preset-solid babel-eslint eslint eslint-loader prettier webpack webpack-cli webpack-dev-server webpack-merge html-webpack-plugin clean-webpack-plugin babel-loader file-loader license-webpack-plugin css-loader style-loader postcss-loader autoprefixer mini-css-extract-plugin jest jest-emotion
 ```
 
 

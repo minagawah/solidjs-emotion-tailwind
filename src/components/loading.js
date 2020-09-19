@@ -2,7 +2,6 @@
 
 import { css } from 'emotion';
 
-/* #d2d2d2 */
 export const Loading = props => (
   <div
     className={css`

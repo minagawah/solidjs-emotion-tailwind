@@ -3,7 +3,7 @@
 import { createEffect, afterEffects, onCleanup } from 'solid-js';
 import { identity } from 'ramda';
 import { css } from 'emotion';
-import tw from 'tailwind.macro';
+import tw from 'twin.macro';
 
 import { int, requestAnimFrame, cancelAnimFrame } from '@/lib/utils';
 import { useMouse } from '@/lib/mouse';

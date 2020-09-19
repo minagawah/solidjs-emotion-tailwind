@@ -1,7 +1,7 @@
 /** @prettier */
 
 import { css } from 'emotion';
-import tw from 'tailwind.macro';
+import tw from 'twin.macro';
 
 import { black, darkgray, pink, yellow } from '@/constants/colors';
 
@@ -10,7 +10,6 @@ const greenYellow = '#aef71e';
 const flexRow = css`
   ${tw`flex flex-row flex-no-wrap justify-start content-center items-stretch`}
 `;
-
 const flexCol = css`
   ${tw`flex flex-col flex-no-wrap justify-center content-center items-center`}
 `;
@@ -52,14 +51,16 @@ const linkStyle = css`
   }
 `;
 
+/*
+      <a href="#profile" className={linkStyle}>
+        Profile
+      </a>
+ */
 export const Header = () => {
   return (
     <header className={flexRow}>
       <a href="#top" className={logoLinkStyle}>
         SolidJS
-      </a>
-      <a href="#profile" className={linkStyle}>
-        Profile
       </a>
       <a href="#anim" className={linkStyle}>
         Animations

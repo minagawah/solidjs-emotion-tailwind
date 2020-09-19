@@ -1,7 +1,7 @@
 /** @prettier */
 
 import { css } from 'emotion';
-import tw from 'tailwind.macro';
+import tw from 'twin.macro';
 
 import { black, darkgray, pink, cyan, lightcyan } from '@/constants/colors';
 
@@ -27,10 +27,12 @@ export const buttonStyle = css`
   ${buttonBase}
   background-color: ${pink};
   color: ${darkgray};
-  &:link, &:visited {
+  &:link,
+  &:visited {
     color: ${darkgray};
   }
-  &:hover, &:active {
+  &:hover,
+  &:active {
     background-color: ${cyan};
     color: ${darkgray};
     text-decoration: none;

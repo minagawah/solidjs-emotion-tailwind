@@ -1,28 +1,26 @@
 /** @prettier */
 
 module.exports = {
-  presets: [
+  "presets": [
     [
       '@babel/preset-env',
       {
-        targets: {
-          browsers: [
-            'last 1 chrome versions',
-            'last 1 firefox versions',
-            'last 1 safari versions',
-          ],
+        "useBuiltIns": "entry",
+        "corejs": 3,
+        "targets": {
+          "esmodules": true,
         },
       },
     ],
-    'solid',
+    "solid",
   ],
-  plugins: [
+  "plugins": [
+    "macros",
     [
-      'emotion',
+      "emotion",
       {
-        autoLabel: true,
+        "autoLabel": true,
       },
     ],
-    'macros', // Using 'babel-plugin-macros' for Emotion + Tailwind.
   ],
 };

@@ -1,7 +1,7 @@
 /** @prettier */
 
 import { css } from 'emotion';
-import tw from 'tailwind.macro';
+import tw from 'twin.macro';
 
 import { useStore } from '@/store';
 import { darkgray, pink, yellow } from '@/constants/colors';
@@ -12,7 +12,9 @@ const wrapperStyle = css`
   ${tw`mt-2 flex flex-row flex-no-wrap justify-start content-center items-center`}
 `;
 
-const padding = tw`p-1 pl-4 pr-4`;
+const padding = css`
+  ${tw`p-1 pl-4 pr-4`}
+`;
 
 // font-weight ---> [normal] 400 [medium] 500 [bold] 700
 const secretStyle = css`

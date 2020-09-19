@@ -34,7 +34,7 @@ export const useDebounce = () => {
       reset();
     };
 
-    return function() {
+    return function () {
       // When still running, cancel the previous (so that
       // the previous won't run), and register a new timer.
       if (timerId) cancel();

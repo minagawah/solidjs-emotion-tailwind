@@ -1,9 +1,7 @@
 /** @prettier */
 
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const autoprefixer = require('autoprefixer');
-const tailwindcss = require('tailwindcss');
 const LicenseWebpackPlugin = require('license-webpack-plugin')
   .LicenseWebpackPlugin;
 
@@ -55,17 +53,11 @@ module.exports = merge(common, {
         test: /\.css$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader,
+            loader: MiniCssExtractPlugin.loader
           },
           'css-loader',
-          {
-            loader: 'postcss-loader',
-            options: {
-              ident: 'postcss',
-              plugins: [tailwindcss(), autoprefixer()],
-            },
-          },
-        ],
+          'postcss-loader'
+        ]
       },
     ],
   },

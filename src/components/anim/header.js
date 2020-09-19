@@ -1,11 +1,9 @@
 /** @prettier */
 
 import { css } from 'emotion';
-import tw from 'tailwind.macro';
+import tw from 'twin.macro';
 
-const wrapperStyle = css`
-  ${tw`flex flex-row flex-no-wrap justify-start content-end items-end`}
-`;
+const wrapperStyle = tw`flex flex-row flex-no-wrap justify-start content-end items-end`;
 
 const linkStyle = css`
   margin-left: 0.3em;

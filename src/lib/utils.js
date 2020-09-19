@@ -83,7 +83,7 @@ export const requestAnimFrame =
   window.requestAnimationFrame ||
   window.webkitRequestAnimationFrame ||
   window.mozRequestAnimationFrame ||
-  function(a) {
+  function (a) {
     window.setTimeout(a, 1e3 / 60);
   };
 

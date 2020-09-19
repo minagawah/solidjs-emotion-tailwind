@@ -10,12 +10,19 @@ let PIXI;
  */
 export const importPIXI = async () => {
   if (!PIXI) {
-    PIXI = await import('pixi.js');
-    const isWebGL = PIXI && PIXI.utils.isWebGLSupported();
-    if (!isWebGL) {
-      PIXI = void 0;
-      PIXI = await import('pixi.js-legacy');
-    }
+    PIXI = await import('pixi.js-legacy');
+    PIXI.legacy = true;
+    // TODO
+    // Fix it later! (along with "generateCanvasTexture" issue)
+    // --------------------------------------------------------
+    // PIXI = await import('pixi.js');
+    // const isWebGL = PIXI && PIXI.utils.isWebGLSupported();
+    // if (!isWebGL) {
+    //   PIXI = void 0;
+    //   PIXI = await import('pixi.js-legacy');
+    //   PIXI.legacy = true;
+    // }
+    // --------------------------------------------------------
   }
   return PIXI;
 };

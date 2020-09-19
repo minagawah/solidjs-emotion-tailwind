@@ -1,13 +1,14 @@
 /** @prettier */
 
 import { css } from 'emotion';
-import tw from 'tailwind.macro';
+import tw from 'twin.macro';
 
 import { pink } from '@/constants/colors';
 import logo from '@/assets/logo-js.svg';
 
 import { titleStyle } from './styles';
 
+// https://css-tricks.com/a-grid-of-logos-in-squares/
 const gridStyle = css`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));

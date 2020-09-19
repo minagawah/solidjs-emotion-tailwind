@@ -2,7 +2,7 @@
 
 import { createResourceState } from 'solid-js';
 import { css } from 'emotion';
-import tw from 'tailwind.macro';
+import tw from 'twin.macro';
 
 import { randInt } from '@/lib/utils';
 import { darkgray, pink } from '@/constants/colors';
